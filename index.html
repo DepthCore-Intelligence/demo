@@ -142,6 +142,7 @@ figure{margin:28px auto 0}
 .repeatability-table tbody tr:last-child td{border-bottom:0}
 .repeatability-note{margin:12px 0 0;color:var(--ink-3);font-size:12px;line-height:1.7}
 #spFig .stage{position:relative}
+#navFig .stage{position:relative}
 #spFig.deferred .stage::after,#spFig.loading .stage::after{content:'空间素材将在进入视口后加载';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:8px 14px;border-radius:999px;background:rgba(20,20,19,.72);color:var(--ivory);font-size:12px;letter-spacing:.02em;pointer-events:none}
 #spFig.loading .stage::after{content:'空间点云加载中';animation:pulse-loader 1.2s ease-in-out infinite}
 #navFig.deferred .stage::after{content:'导航回放将在进入视口后加载';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:8px 14px;border-radius:999px;background:rgba(20,20,19,.72);color:var(--ivory);font-size:12px;letter-spacing:.02em;pointer-events:none}
@@ -665,6 +666,20 @@ VIEWS.forEach((v,i) => {
   src[v.k] = Object.assign(document.createElement('canvas'), {width:W, height:H});
 });
 
+// Put a lightweight image in every panel immediately. The full depth buffers
+// are decoded in the background, so slower Safari/network combinations never
+// present a wall of empty dark tiles during the first paint.
+function showPoster(id, m){
+  const poster = new Image();
+  poster.onload = () => {
+    if (data.gt) return;
+    VIEWS.forEach(v => src[v.k].getContext('2d').drawImage(poster, 0, 0, W, H));
+    blit();
+  };
+  poster.src = `depth-comparison/pixels/${id}/ir-${m}.png`;
+}
+showPoster(scene, mode);
+
 /* ---------- drawing, synced zoom/pan ---------- */
 function clampPan(){ if (scale === 1) { px = py = 0; } const mx = W*(scale-1)/2, my = H*(scale-1)/2; px = Math.max(-mx, Math.min(mx, px)); py = Math.max(-my, Math.min(my, py)); }
 function draw(){
@@ -800,7 +815,7 @@ async function load(){
   const s = ++seq;
   $('#dcVeil').classList.add('on');
   $('#dcCap').innerHTML = `<b>${label(scene)}</b>`;
-  $('#dcVeil').innerHTML = `<div>${data.gt ? '正在切换…' : '加载中…'}</div>`;
+  $('#dcVeil').innerHTML = `<div>${data.gt ? '正在切换…' : '正在加载深度…'}</div>`;
   try {
     const sc = await fetchScene(scene, mode);
     if (s !== seq) return;
@@ -820,8 +835,8 @@ async function load(){
 }
 function segGroup(el, fn){ el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
   el.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x===b)); fn(b); }); }
-segGroup($('#dcScene'), b => { scene = b.dataset.s; syncUrl(); load(); });
-segGroup($('#dcMode'), b => { mode = b.dataset.m; syncUrl(); load(); });
+segGroup($('#dcScene'), b => { scene = b.dataset.s; syncUrl(); showPoster(scene, mode); load(); });
+segGroup($('#dcMode'), b => { mode = b.dataset.m; syncUrl(); showPoster(scene, mode); load(); });
 $('#dcZoom').addEventListener('click', e => { const b = e.target.closest('button'); if (b) zoomTo(+b.dataset.z); });
 segGroup($('#dcSource'), b => { csrc = b.dataset.src; if (data.gt && computeRange()) { paint(); showKey(); blit(); } });
 $('#dcMode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.m===mode));

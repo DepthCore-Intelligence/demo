@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DepthCore · 深度感知能力展示</title>
+<meta name="description" content="DepthCore 深度感知能力展示：操作、导航与空间推理案例。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+/* 博客式单栏。两个案例共用同一种图：墨色底板上 2×2 画面 + 右侧俯视图，
+   上方一行说明，下方一行控制、一行结果。
+   DepthCore 标准色：墨黑 #141413 · 象牙白 #FAF9F5 · 陶土橙 #D97757 */
+:root{
+  --ink:#141413; --ink-2:#4B4A45; --ink-3:#8A877F; --ivory:#FAF9F5; --clay:#D97757;
+  --line:rgba(20,20,19,.10); --soft:#EFEDE6; --stage:#1B1B19;
+  /* 系列色与导航俯视图里的轨迹同色相 */
+  --nsl:#02A982; --tradsl:#F38A40; --da2:#9972E2; --gt:#488AF3; --lingbot:#D9A62E; --raw:#A8A49A;
+  --ok:#3D7A56; --no:#B4493B;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --text:700px; --wide:1120px;
+  /* Spectral_r, the one depth colormap used across the page */
+  --dcgrad:linear-gradient(90deg,rgb(94,79,162) 0.0%,rgb(63,150,182) 12.5%,rgb(137,207,164) 25.1%,rgb(216,239,154) 37.6%,rgb(254,254,189) 50.2%,rgb(253,210,127) 62.7%,rgb(248,139,81) 75.3%,rgb(219,72,76) 87.8%,rgb(158,1,66) 100%);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.8;overflow-x:hidden}
+.page{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.col{max-width:var(--text);margin:0 auto}
+.wide{max-width:var(--wide);margin:0 auto}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,.track:focus-visible{outline:2px solid var(--clay);outline-offset:2px;border-radius:4px}
+
+header.top{padding:24px 0 0}
+header.top img{height:26px;display:block}
+.intro{padding:76px 0 0}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,42px);line-height:1.25;margin:0 0 18px;text-wrap:balance}
+.intro p,.case .col p{margin:0 0 12px;color:var(--ink-2)}
+h2{font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.35;margin:0 0 10px}
+section.case{padding-top:72px}
+.quote{color:var(--ink)}
+
+/* ---------- shared figure ---------- */
+figure{margin:28px auto 0}
+.cap{font-size:14px;color:var(--ink-2);text-align:center;margin:0 0 12px;min-height:1.8em;text-wrap:balance}
+.cap b{color:var(--ink);font-weight:500}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.5203fr);align-items:start;gap:6px;background:var(--stage);padding:6px;border-radius:12px}
+.quad{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tile{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:6px;background:#000}
+.tile canvas,.tile img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;background:#000 center/cover no-repeat}
+.tile img.recon{object-fit:contain;background:#171F18}
+.key i.depthbar{display:block;width:100%;height:6px;border-radius:3px;margin:2px 0 0}
+.key .scale{display:flex;justify-content:space-between;font-size:10px;color:rgba(250,249,245,.7)}
+.tag,.chip{position:absolute;z-index:2;font-size:12px;line-height:1.6;color:#fff;padding:1px 8px;border-radius:4px;background:rgba(20,20,19,.62);white-space:nowrap}
+.tag{left:8px;top:8px;font-weight:700;border-left:3px solid var(--c)}
+.chip{right:8px;bottom:8px}
+.mark{font-weight:700;margin-left:4px}
+.mark.ok{color:#8FD3A8} .mark.no{color:#F29C8A}
+.tile .dep{position:absolute;inset:auto auto 8px 8px;width:26%;height:auto;aspect-ratio:4/3;border-radius:4px;box-shadow:0 0 0 1px rgba(250,249,245,.5);opacity:0;transition:opacity .3s}
+.ready .tile .dep{opacity:1}
+.veil{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;background:rgba(20,20,19,.6);color:var(--ivory);font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.veil.on{opacity:1}
+.veil small{display:block;font-size:12px;color:rgba(250,249,245,.7)}
+.map{position:relative;aspect-ratio:666/960;width:100%;border-radius:6px;overflow:hidden;background:#B49C84}
+.map>canvas,.map>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.map canvas{background:#B49C84 url(media/topview-poster.jpg) center/cover no-repeat}
+.key{position:absolute;left:8px;top:8px;z-index:2;display:flex;flex-direction:column;gap:5px;padding:7px 9px;border-radius:6px;background:rgba(20,20,19,.72);font-size:11px;line-height:1.35;color:rgba(250,249,245,.92);max-width:calc(100% - 16px)}
+.key span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.key svg{flex:none;width:16px;height:12px;overflow:visible}
+.key i{flex:none;width:16px;height:3px;border-radius:2px;background:var(--c)}
+.key hr{border:0;border-top:1px solid rgba(250,249,245,.18);margin:1px 0}
+
+.ctrl{display:flex;align-items:center;gap:14px;margin-top:12px;min-height:34px}
+.results{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 22px;margin:10px 0 0;padding:0;list-style:none;font-size:13px;color:var(--ink-2)}
+.results li{display:inline-flex;align-items:baseline;gap:6px}
+.results b{color:var(--c);font-weight:700}
+.results .ok{color:var(--ok);font-weight:700} .results .no{color:var(--no);font-weight:700}
+.results .gt{color:var(--ink-3)}
+.results .gt strong{color:var(--ink);font-weight:500}
+
+/* navigation controls */
+.play{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--ivory);display:grid;place-items:center;flex:none}
+.play:hover{background:var(--clay)}
+.play[disabled]{opacity:.4;cursor:progress}
+.play svg{width:13px;height:13px}
+.track{position:relative;flex:1;height:30px;cursor:pointer;touch-action:none}
+.segs{position:absolute;left:0;right:0;top:4px;height:6px;display:flex;gap:2px}
+.segs div{position:relative;height:100%;background:rgba(20,20,19,.10);border-radius:3px;overflow:hidden}
+.segs i{position:absolute;inset:0;width:0;background:var(--ink)}
+.segs .cur i{background:var(--clay)}
+.labels{position:absolute;left:0;right:0;top:14px;display:flex;gap:2px;font-size:11px;line-height:1.3;color:var(--ink-3);pointer-events:none}
+.labels span{overflow:hidden;white-space:nowrap;min-width:0}
+.labels .cur{color:var(--clay);font-weight:500}
+.time{font-family:var(--mono);font-size:12px;color:var(--ink-3);flex:none;font-variant-numeric:tabular-nums;min-width:86px;text-align:right}
+
+/* spatial controls */
+.ctrl.sp{justify-content:space-between;flex-wrap:wrap;gap:10px}
+.seg{display:inline-flex;padding:3px;border-radius:9px;background:var(--soft)}
+.seg button{padding:3px 12px;border-radius:7px;font-size:13px;line-height:1.7;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ivory)}
+
+/* depth comparison */
+.stage.dc{display:block;position:relative}
+.six{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tile.w{aspect-ratio:16/9;cursor:grab;touch-action:pan-y}
+.zoomed .tile.w{touch-action:none}
+.tile.w:active{cursor:grabbing}
+.tile.w canvas{background:#182430}
+.tile.w .chip{display:flex;gap:12px;font-variant-numeric:tabular-nums}
+.tile.w .chip b{font-weight:700}
+.stage.dc .veil{border-radius:12px}
+.ctrl-r{display:flex;gap:10px;flex-wrap:wrap}
+#dcScene{flex-wrap:wrap}
+.dclegend{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 14px;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.depthkey{display:inline-flex;align-items:center;gap:7px;color:var(--ink-3);font-size:12px;font-variant-numeric:tabular-nums}
+.depthkey i{display:block;width:120px;height:6px;border-radius:3px;background:var(--dcgrad)}
+.performance-card{max-width:var(--wide);margin:26px auto 0;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.45)}
+.performance-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
+.performance-head h3{margin:0;font-size:17px;line-height:1.4}
+.performance-head p{margin:0;color:var(--ink-3);font-size:12px}
+.performance-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.performance-table{width:100%;min-width:520px;border-collapse:collapse;font-size:14px}
+.performance-table th,.performance-table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.performance-table th:first-child,.performance-table td:first-child{text-align:left}
+.performance-table th{color:var(--ink-3);font-size:11px;font-weight:500}
+.performance-table tbody tr:first-child td:first-child,.performance-table tbody tr:first-child td:nth-child(2){font-weight:700;color:var(--clay)}
+.performance-table tbody tr:last-child td{border-bottom:0}
+.repeatability-card{max-width:var(--wide);margin:18px auto 0;padding:20px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.45)}
+.repeatability-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:10px}
+.repeatability-head h3{margin:0;font-size:17px;line-height:1.4}
+.repeatability-head p{margin:0;color:var(--ink-3);font-size:12px}
+.repeatability-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.repeatability-table{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}
+.repeatability-table th,.repeatability-table td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.repeatability-table th:first-child,.repeatability-table td:first-child{text-align:left}
+.repeatability-table th{color:var(--ink-3);font-size:11px;font-weight:500}
+.repeatability-table th:last-child,.repeatability-table td:last-child{color:var(--clay)}
+.repeatability-table tbody tr:last-child td{border-bottom:0}
+.repeatability-note{margin:12px 0 0;color:var(--ink-3);font-size:12px;line-height:1.7}
+#spFig .stage{position:relative}
+#spFig.deferred .stage::after,#spFig.loading .stage::after{content:'空间素材将在进入视口后加载';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:8px 14px;border-radius:999px;background:rgba(20,20,19,.72);color:var(--ivory);font-size:12px;letter-spacing:.02em;pointer-events:none}
+#spFig.loading .stage::after{content:'空间点云加载中';animation:pulse-loader 1.2s ease-in-out infinite}
+#navFig.deferred .stage::after{content:'导航回放将在进入视口后加载';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:8px 14px;border-radius:999px;background:rgba(20,20,19,.72);color:var(--ivory);font-size:12px;letter-spacing:.02em;pointer-events:none}
+.man-status.loading::after{content:' …';animation:pulse-loader 1.2s ease-in-out infinite}
+@keyframes pulse-loader{0%,100%{opacity:.48}50%{opacity:1}}
+@media (max-width:760px){.six{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){#dcScene button{padding:3px 8px}}
+
+footer.col{margin-top:88px;padding:22px 0 36px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3)}
+#atlas{position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none}
+
+@media (max-width:900px){
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .map{width:min(100%,340px);margin:0 auto}
+}
+@media (max-width:560px){
+  .page{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .intro{padding-top:44px}
+  section.case{padding-top:52px}
+  .labels{display:none}
+  .track{height:14px}
+  .time{min-width:auto}
+  .tile .dep{width:30%}
+  .tag,.chip{font-size:11px;padding:0 6px}
+  .ctrl.sp{justify-content:center}
+  .performance-head{display:block}.performance-head p{margin-top:3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="icon" type="image/svg+xml" href="media/depthcore-logo.svg">
+<link rel="stylesheet" href="manipulation.css">
+<script src="manipulation.js?v=20261108-4" defer></script>
+</head>
+<body>
+<div class="page">
+
+<header class="top col"><img src="media/depthcore-logo.svg" alt="DepthCore 深度核芯科技"><nav class="demo-nav" aria-label="页面导航"><a href="#depth">深度展示</a><a href="#manipulation">下游任务</a></nav></header>
+
+<div class="intro col" id="depth">
+  <h1>深度感知能力展示</h1>
+  <p class="depth-positioning"><b>我们先于行业 8 年选择 Learning 路线，持续构建 AI-native 的双目主动式深度。</b>相较于更简单、更成熟的传统 Pattern Match 及其后处理方法，我们直接从主动双目观测中学习三维表达，更适合复杂场景与具身智能的多样需求。以下展示深度质量与下游可用性的实测结果。</p>
+</div>
+
+<figure class="wide" id="dcFig">
+  <p class="cap" id="dcCap">加载中…</p>
+  <div class="stage dc" id="dcStage">
+    <div class="six" id="dcGrid"></div>
+    <div class="veil on" id="dcVeil"><div>加载中…</div></div>
+  </div>
+  <div class="ctrl sp">
+    <div class="seg" id="dcScene" role="group" aria-label="场景"></div>
+    <div class="ctrl-r">
+      <div class="seg" id="dcMode" role="group" aria-label="投影打光">
+        <button data-m="on" aria-pressed="true">开投影</button>
+        <button data-m="off" aria-pressed="false">关投影</button>
+      </div>
+      <div class="seg" id="dcZoom" role="group" aria-label="缩放">
+        <button data-z="1" aria-pressed="true">1×</button>
+        <button data-z="2" aria-pressed="false">2×</button>
+        <button data-z="4" aria-pressed="false">4×</button>
+      </div>
+    </div>
+  </div>
+  <div class="dclegend">
+    <span>色阶参考</span>
+    <div class="seg" id="dcSource" role="group" aria-label="色阶参考">
+      <button data-src="nsl" aria-pressed="false">NSL</button>
+      <button data-src="gt" aria-pressed="true">Ground truth</button>
+    </div>
+    <span class="depthkey" id="dcKey">近<i></i>远</span>
+  </div>
+</figure>
+
+<div class="performance-card wide" aria-labelledby="performance-title">
+  <div class="performance-head"><h3 id="performance-title">平均性能表现</h3></div>
+  <div class="performance-scroll"><table class="performance-table"><thead><tr><th>方法</th><th>平均 MAE（mm）↓</th><th>平均覆盖率（%）↑</th></tr></thead><tbody><tr><td><strong>NSL</strong></td><td><strong>4.96</strong></td><td><strong>96.86</strong></td></tr><tr><td>LingBot-Depth</td><td>14.28</td><td>96.52</td></tr><tr><td>DA2</td><td>607.50</td><td>95.49</td></tr><tr><td>Raw Depth</td><td>18.40</td><td>74.38</td></tr></tbody></table></div>
+</div>
+
+<div class="repeatability-card wide" aria-labelledby="repeatability-title">
+  <div class="repeatability-head"><h3 id="repeatability-title">逐像素重复性对比</h3><p>指标为时间标准差 1σ，越小越好。“—”表示无法可靠评价。</p></div>
+  <div class="repeatability-scroll"><table class="repeatability-table"><thead><tr><th>标称距离（m）</th><th>D435 原生<br>逐像素重复性中位数（mm）</th><th>NSL<br>逐像素重复性中位数（mm）</th></tr></thead><tbody><tr><td>0.20</td><td>—</td><td>0.0761</td></tr><tr><td>0.25</td><td>—</td><td>0.1056</td></tr><tr><td>0.30</td><td>0.5374</td><td>0.1511</td></tr><tr><td>0.40</td><td>0.4852</td><td>0.2199</td></tr><tr><td>0.50</td><td>—</td><td>0.3035</td></tr></tbody></table></div>
+</div>
+
+<div class="intro col">
+  <h1>深度的下游任务</h1>
+  <p>三个下游任务均由同一个 Depth RSI Agent 驱动，分别在 RoboDojo Precision、OmniNavBench 与 GRScenes-SI 中接入四种深度输入，观察深度感知如何影响机器人的判断与行动。</p>
+</div>
+
+
+<section class="case" id="manipulation" aria-labelledby="man-h">
+  <div class="col">
+    <h2 id="man-h">操作</h2>
+    <p><b>RoboDojo Precision。</b>Depth RSI Agent 接收不同深度输入，完成空间定位与精细操作。</p>
+  </div>
+  <figure class="wide" id="manFig">
+    <div class="man-head"><p class="cap"><b>同一任务，四种深度输入。</b> 从三维定位到精细操作。</p></div>
+    <p class="man-status" id="manStatus" role="status">滚动到此处加载操作素材</p>
+    <div class="stage man-stage">
+      <div class="quad" id="manQuad"></div>
+      <aside class="man-agent" id="manAgent" aria-label="Agent 执行轨迹">
+        <div class="man-agent-top"><h3>Agent 执行轨迹</h3><span class="man-live" id="manAgentState">NSL · 记录回放</span></div>
+        <div class="man-tabs" id="manTabs" role="group" aria-label="选择执行记录"></div>
+        <div class="man-log">
+          <div class="man-log-meta"><span id="manTurn">记录 01</span><span id="manStep"></span><span id="manLogCount" hidden></span></div>
+          <article class="man-current">
+            <section class="man-action"><div class="man-section-label"><i>01</i>当前动作</div><h4 id="manEventTitle"></h4><div class="man-tools" id="manTools" aria-label="本段记录的工具调用"></div></section>
+            <section class="man-input"><div class="man-section-label"><i>02</i>输入参数</div><code id="manInput"></code></section>
+            <section class="man-feedback"><div class="man-section-label"><i>03</i><span id="manFeedbackLabel">执行反馈</span></div><div id="manFeedback"></div></section>
+          </article>
+          <div class="man-event-nav"><button id="manPrevEvent" aria-label="跳到上一条工具记录">← 上一条</button><button class="man-source-open" id="manSourceOpen" aria-controls="manSource" aria-expanded="false">原始记录 ↗</button><button id="manNextEvent" aria-label="跳到下一条工具记录">下一条 →</button></div>
+        </div>
+        <section class="man-source-panel" id="manSource" hidden aria-label="原始调用与返回">
+          <div class="man-source-head"><h4>原始调用与返回</h4><button id="manSourceClose" aria-label="关闭原始记录">×</button></div>
+          <div class="man-source-body"><span>调用摘录</span><pre id="manExcerpt"></pre><span>工具返回</span><pre id="manReceipt"></pre><p id="manSourceNote"></p></div>
+        </section>
+      </aside>
+    </div>
+    <div class="ctrl man-ctrl">
+      <button class="play" id="manPlay" aria-label="播放操作回放" disabled>▶</button>
+      <button id="manRestart" aria-label="重置操作回放" title="重新开始">↺</button>
+      <input class="man-scrub" id="manScrub" type="range" min="0" max="20.04" step="0.04" value="0" aria-label="操作回放进度">
+      <select class="man-speed" id="manSpeed" aria-label="操作播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+      <span class="time" id="manTime">00:00 / 00:20</span>
+    </div>
+    <div class="man-depth-legend"><span class="depthkey">0.15 m 近<i></i>远 1.20 m</span></div>
+    <ul class="results man-results" id="manResults"></ul>
+  </figure>
+</section>
+
+<section class="case" id="navigation" aria-labelledby="nav-h">
+  <div class="col">
+    <h2 id="nav-h">导航</h2>
+    <p><b>OmniNavBench。</b>Depth RSI Agent 在复杂室内环境中理解自然语言指令，完成转向、行进、回撤与目标靠近。</p>
+  </div>
+
+  <figure class="wide deferred" id="navFig">
+    <p class="cap" id="navCap">滚动到此处加载导航回放</p>
+    <div class="stage">
+      <div class="quad" id="quad"></div>
+      <div class="map"><canvas id="tv" width="666" height="960"></canvas><div class="key" id="navKey"></div></div>
+    </div>
+    <div class="ctrl">
+      <button class="play" id="play" aria-label="播放" disabled><svg id="playIcon" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9.5-5.5z"/></svg></button>
+      <div class="track" id="track" tabindex="0" role="slider" aria-label="播放进度" aria-valuemin="0" aria-valuemax="81">
+        <div class="segs" id="segs"></div>
+        <div class="labels" id="labels"></div>
+      </div>
+      <span class="time" id="time">00:00 / 01:21</span>
+    </div>
+    <ul class="results" id="navResults"></ul>
+  </figure>
+</section>
+
+<section class="case" id="spatial" aria-labelledby="sp-h">
+  <div class="col">
+    <h2 id="sp-h">空间推理</h2>
+    <p><b>GRScenes-SI。</b>Depth RSI Agent 查看场景画面并调用深度工具，回答关于物体距离与相对方向的问题，还原三维空间关系。</p>
+  </div>
+
+  <figure class="wide" id="spFig">
+    <p class="cap" id="spCap"></p>
+    <div class="stage">
+      <div class="quad" id="spQuad"></div>
+      <div class="map"><svg id="spMap" preserveAspectRatio="xMidYMid slice" aria-label="场景俯视图"></svg>
+        <div class="key" id="spKey"></div>
+      </div>
+    </div>
+    <div class="ctrl sp">
+      <div class="seg" id="taskSeg" role="group" aria-label="题目"></div>
+      <div class="seg" id="viewSeg" role="group" aria-label="显示内容">
+        <button data-v="cloud" aria-pressed="true">点云</button>
+        <button data-v="rgb" aria-pressed="false">原图</button>
+      </div>
+    </div>
+    <ul class="results" id="spResults"></ul>
+  </figure>
+</section>
+
+<footer class="col">北京深度核芯科技有限公司</footer>
+</div>
+
+<video id="atlas" muted playsinline preload="none" aria-hidden="true"></video>
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const FPS = 24, DUR = 81;
+const COLOR = {NSL:'var(--nsl)', TradSL:'var(--tradsl)', DA2:'var(--da2)', GT:'var(--gt)'};
+const fmt = t => { t = Math.max(0,t); return String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0'); };
+const mark = ok => `<span class="mark ${ok?'ok':'no'}">${ok?'✓':'✗'}</span>`;
+
+/* ================= navigation ================= */
+const M = [
+  {id:'NSL', key:'nsl', ne:1.56, ok:true}, {id:'TradSL', key:'tradsl', ne:6.42, ok:false},
+  {id:'DA2', key:'da2', ne:2.26, ok:false}, {id:'GT', key:'gt', ne:1.50, ok:true},
+];
+const PHASES = [
+  [0,'准备出发','出发'],[3,'右转 90°','右转'],[8,'直行 5.7 米','直行'],[18,'掉头 180°','掉头'],
+  [26,'返回 4 米','返回'],[35,'再次右转 90°','右转'],[40,'直行 2.6 米后停下','直行'],
+  [50,'寻找并靠近银色椅子','找椅子'],[72,'测距确认并停车','停车'],[77,'结果','结果'],
+].map(([t,name,short],i,a) => ({t,name,short,end: i<a.length-1 ? a[i+1][0] : DUR}));
+const NOT_ENTERED = {TradSL:[7,8]};   // ran out of steps during step 6
+
+$('#quad').innerHTML = M.map(m => `
+  <div class="tile" id="t-${m.key}" style="--c:${COLOR[m.id]}">
+    <canvas class="rgb" width="640" height="480" style="background-image:url(media/${m.key}-poster.jpg)"></canvas>
+    <canvas class="dep" width="256" height="192"></canvas>
+    <span class="tag">${m.id}</span>
+    <div class="veil"><div></div></div>
+  </div>`).join('');
+M.forEach(m => { const el = $('#t-'+m.key); m.r = el.querySelector('.rgb').getContext('2d'); m.d = el.querySelector('.dep').getContext('2d'); m.veil = el.querySelector('.veil'); });
+const tv = $('#tv').getContext('2d');
+$('#navKey').innerHTML = M.map(m => `<span style="--c:${COLOR[m.id]}"><i></i>${m.id}</span>`).join('')
+  + `<hr><span><svg viewBox="0 0 16 12"><circle cx="8" cy="6" r="4" fill="#fff" stroke="#141413" stroke-width="1.5"/></svg>共同起点</span>`
+  + `<span><svg viewBox="0 0 16 12"><path d="M8 1 13 6 8 11 3 6z" fill="#F2C94C" stroke="#141413"/></svg>银色椅子（目标）</span>`;
+$('#segs').innerHTML = PHASES.map(p => `<div style="flex:${p.end-p.t}"><i></i></div>`).join('');
+$('#labels').innerHTML = PHASES.map(p => `<span style="flex:${p.end-p.t}">${p.short}</span>`).join('');
+const segEls = [...$('#segs').children], labEls = [...$('#labels').children];
+$('#navResults').innerHTML = M.map(m => `<li style="--c:${COLOR[m.id]}"><b>${m.id}</b>${m.ok?'到达':'未到达'} · 误差 ${m.ne.toFixed(2)} m<span class="${m.ok?'ok':'no'}">${m.ok?'✓':'✗'}</span></li>`).join('');
+
+/* One video holds every view: four 640×480 RGB tiles (2×2), a row of 256×192 depth
+   tiles at y=960, and the 666×960 top-down map at x=1280. One clock, no drift. */
+const atlas = $('#atlas');
+const DEPTH_X = {nsl:0, tradsl:512, da2:768, gt:1024};
+let ready = false, playing = false, cur = 0, scrubbing = false, lastPi = -1, navStarted = false;
+function draw(){
+  if (atlas.readyState < 2) return;
+  M.forEach((m,i) => {
+    m.r.drawImage(atlas, (i%2)*640, Math.floor(i/2)*480, 640, 480, 0, 0, 640, 480);
+    m.d.drawImage(atlas, DEPTH_X[m.key], 960, 256, 192, 0, 0, 256, 192);
+  });
+  tv.drawImage(atlas, 1280, 0, 666, 960, 0, 0, 666, 960);
+}
+const phaseAt = t => { for (let i=PHASES.length-1;i>=0;i--) if (t >= PHASES[i].t) return i; return 0; };
+function render(t){
+  const pi = phaseAt(Math.min(t, DUR-0.001));
+  $('#time').textContent = fmt(t)+' / '+fmt(DUR);
+  $('#track').setAttribute('aria-valuenow', t.toFixed(1));
+  segEls.forEach((s,i) => { const p = PHASES[i]; s.firstChild.style.width = Math.max(0,Math.min(1,(t-p.t)/(p.end-p.t)))*100+'%'; });
+  if (pi === lastPi || !ready) return;
+  lastPi = pi;
+  segEls.forEach((s,i) => s.classList.toggle('cur', i===pi));
+  labEls.forEach((s,i) => s.classList.toggle('cur', i===pi));
+  $('#navCap').innerHTML = pi === 0 ? '<b>准备出发</b>' : pi === PHASES.length-1 ? '<b>结果</b>' : `第 ${pi} 步 · <b>${PHASES[pi].name}</b>`;
+  M.forEach(m => {
+    const v = m.veil;
+    if (pi === PHASES.length-1) {
+      v.className = 'veil on';
+      v.firstElementChild.innerHTML = `${m.ok?'到达目标':'未到达'}${mark(m.ok)}<small>误差 ${m.ne.toFixed(2)} m</small>`;
+    } else if ((NOT_ENTERED[m.id]||[]).includes(pi)) {
+      v.className = 'veil on';
+      v.firstElementChild.innerHTML = '未进入此步骤<small>此前已用完步数</small>';
+    } else v.className = 'veil';
+  });
+}
+function seek(t){
+  cur = Math.max(0, Math.min(DUR, t));
+  if (ready) { try { atlas.currentTime = Math.min(cur, (atlas.duration||DUR) - 0.02); } catch(e){} }
+  render(cur);
+}
+function setPlaying(p){
+  if (!ready) return;
+  if (p && cur >= DUR - 0.05) seek(0);
+  playing = p;
+  p ? atlas.play().catch(() => { playing = false; icon(); }) : atlas.pause();
+  icon();
+}
+function icon(){
+  $('#playIcon').innerHTML = playing ? '<path d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/>' : '<path d="M4 2.5v11l9.5-5.5z"/>';
+  $('#play').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+function tick(){
+  if (playing) { cur = atlas.currentTime; if (atlas.ended || cur >= DUR-0.03) { cur = DUR; setPlaying(false); } draw(); render(cur); }
+  requestAnimationFrame(tick);
+}
+atlas.addEventListener('seeked', draw);
+atlas.addEventListener('ended', () => { cur = DUR; setPlaying(false); render(cur); });
+setInterval(() => { if (playing) { cur = atlas.currentTime; draw(); render(cur); } }, 250);
+async function load(){
+  $('#navFig').classList.remove('deferred');
+  const url = 'media/atlas.mp4?v=spectral';
+  atlas.addEventListener('loadeddata', () => {
+    ready = true; $('#play').disabled = false; lastPi = -1;
+    $('#navFig').classList.add('ready');
+    // the first frame is not always decoded at loadeddata; seeking guarantees a 'seeked' → draw()
+    atlas.currentTime = cur > 0 ? cur : 0.001;
+    render(cur);
+  }, {once:true});
+  atlas.addEventListener('canplay', draw, {once:true});
+  try {
+    // download once into memory so seeking never depends on the server
+    const r = await fetch(url);
+    if (!r.ok || !r.body) throw new Error(r.status);
+    const total = +r.headers.get('content-length') || 14132958;
+    const reader = r.body.getReader(), chunks = []; let got = 0;
+    for (;;) { const {done, value} = await reader.read(); if (done) break; chunks.push(value); got += value.length;
+      if (!ready) $('#navCap').textContent = '加载中 ' + Math.round(Math.min(.99, got/total)*100) + '%'; }
+    atlas.src = URL.createObjectURL(new Blob(chunks, {type:'video/mp4'}));
+  } catch (e) { atlas.preload = 'auto'; atlas.src = url; }
+  atlas.load();
+}
+$('#play').onclick = () => setPlaying(!playing);
+const track = $('#track');
+const tAt = e => { const r = track.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX-r.left)/r.width)) * DUR; };
+track.addEventListener('pointerdown', e => { scrubbing = true; track.setPointerCapture(e.pointerId); seek(tAt(e)); });
+track.addEventListener('pointermove', e => { if (scrubbing) seek(tAt(e)); });
+track.addEventListener('pointerup', () => { scrubbing = false; });
+track.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { e.preventDefault(); seek(PHASES[Math.min(PHASES.length-1, phaseAt(cur)+1)].t + .02); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); seek(PHASES[Math.max(0, phaseAt(cur)-1)].t + .02); }
+});
+document.addEventListener('keydown', e => {
+  if (e.code !== 'Space' || e.target.closest('button')) return;
+  const r = $('#navFig').getBoundingClientRect();
+  if (r.bottom > 0 && r.top < innerHeight) { e.preventDefault(); setPlaying(!playing); }
+});
+
+/* ================= spatial reasoning ================= */
+const SPATIAL = {"cases":[{"id":2500,"title":"相对距离","q":"电视和垃圾桶，哪个物体的包围盒中心离单人沙发更近？","gt":"电视","scene":"scene-38","methods":[{"id":"NSL","key":"nsl","frame":27,"ans":"电视","ok":true},{"id":"TradSL","key":"tradsl","frame":27,"ans":"垃圾桶","ok":false},{"id":"DA2","key":"da2","frame":27,"ans":"垃圾桶","ok":false},{"id":"GT","key":"gt","frame":27,"ans":"电视","ok":true}],"objects":[{"name":"单人沙发","xy":[7.602,-5.425]},{"name":"垃圾桶","xy":[8.651,-3.155]},{"name":"电视","xy":[6.68,-4.241]}]},{"id":2424,"title":"相对方向","q":"站在门的中心，面朝沙发中心，垃圾桶位于前方、左侧、后方还是右侧？","gt":"前方","scene":"scene-38","methods":[{"id":"NSL","key":"nsl","frame":20,"ans":"前方","ok":true},{"id":"TradSL","key":"tradsl","frame":20,"ans":"右侧","ok":false},{"id":"DA2","key":"da2","frame":20,"ans":"右侧","ok":false},{"id":"GT","key":"gt","frame":20,"ans":"前方","ok":true}],"objects":[{"name":"门","xy":[14.926,-1.713]},{"name":"沙发","xy":[9.587,-4.245]},{"name":"垃圾桶","xy":[8.651,-3.155]}]}],"scenes":{"scene-07":{"bounds":[-6.543011779785156,-1.890772651455733,3.9994828796386717,7.199662882204687],"size":[1200,1035],"frames":[[1.999,2.6,-1.0,-0.0001],[1.682,2.6,-0.9874,0.158],[1.38,2.678,-0.9387,0.3448],[1.1,2.819,-0.8927,0.4506],[0.819,2.966,-0.8768,0.4809],[0.542,3.119,-0.8739,0.4861],[0.265,3.275,-0.874,0.4859],[-0.014,3.426,-0.8835,0.4684],[-0.295,3.572,-0.8911,0.4538],[-0.564,3.724,-0.4382,0.8989],[-0.542,4.039,0.026,0.9997],[-0.555,4.354,-0.044,0.999],[-0.547,4.671,0.0015,1.0],[-0.558,4.988,-0.0439,0.999],[-0.515,5.2,0.3125,-0.9499],[-0.532,4.886,-0.0918,-0.9958],[-0.557,4.57,-0.0708,-0.9975],[-0.577,4.253,-0.0595,-0.9982],[-0.597,3.937,-0.1461,-0.9893],[-0.745,3.698,-0.9282,-0.372],[-1.058,3.664,-0.9963,-0.0858],[-1.375,3.646,-0.9989,-0.0473],[-1.692,3.632,-0.9991,-0.0433],[-2.009,3.619,-0.9992,-0.0411],[-2.325,3.606,-0.9992,-0.0403],[-2.642,3.593,-0.9992,-0.0402],[-2.959,3.58,-0.9992,-0.0401],[-3.276,3.568,-0.9992,-0.04],[-3.593,3.555,-0.9989,-0.0462],[-3.91,3.537,-0.9981,-0.0624],[-4.226,3.516,-0.9983,-0.0588],[-4.543,3.501,-0.9991,-0.0435]]},"scene-38":{"bounds":[3.0004892349243164,-7.941626780524522,17.10123460002593,1.5609545685060597],"size":[1200,809],"frames":[[5.0,-0.5,1.0,0.0001],[5.168,-0.5,1.0,0.0004],[5.335,-0.5,1.0,0.0008],[5.503,-0.5,1.0,0.0017],[5.67,-0.5,0.9999,0.0131],[5.838,-0.496,0.9984,0.0571],[6.004,-0.481,0.9964,0.085],[6.171,-0.465,0.9968,0.0804],[6.338,-0.455,0.9985,0.0555],[6.505,-0.447,0.9991,0.0421],[6.673,-0.439,0.9964,-0.0849],[6.839,-0.46,0.7728,-0.6346],[6.883,-0.611,0.3046,-0.9525],[6.914,-0.776,0.2172,-0.9761],[6.944,-0.939,0.3662,-0.9305],[7.033,-1.081,0.528,-0.8492],[7.127,-1.219,0.5602,-0.8284],[7.22,-1.359,0.5719,-0.8203],[7.318,-1.494,0.6172,-0.7868],[7.429,-1.619,0.626,-0.7798],[7.529,-1.754,0.7086,-0.7056],[7.658,-1.856,0.8036,-0.5952],[7.8,-1.946,0.8421,-0.5393],[7.94,-2.038,0.8349,-0.5503],[8.08,-2.13,0.858,-0.5137],[8.219,-2.222,0.7638,-0.6454],[8.202,-2.281,0.9701,0.2425],[8.286,-2.158,-0.2744,-0.9616],[8.2,-2.302,-0.5682,-0.8229],[8.1,-2.435,-0.6065,-0.7951],[7.995,-2.564,-0.5635,-0.8261],[7.917,-2.708,-0.5155,-0.8569]]}}};
+const SVGNS = 'http://www.w3.org/2000/svg';
+const KEY_PATH = `<span><svg viewBox="0 0 16 12"><path d="M1 6H15" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 2.4" stroke-linecap="round"/></svg>采集路径（32 帧）</span>
+  <span><svg viewBox="0 0 16 12"><path d="M8 1 13 6 8 11 3 6z" fill="#F2C94C" stroke="#141413"/></svg>题目里的物体</span>
+  <span><svg viewBox="0 0 16 12"><path d="M3 10 L14 3 A9 9 0 0 1 15 10Z" fill="#fff" fill-opacity=".55" stroke="#fff" stroke-width="1"/><circle cx="3" cy="10" r="1.8" fill="#fff" stroke="#141413" stroke-width=".8"/></svg>观测位置与朝向</span>`;
+const qs = new URLSearchParams(location.search);
+const SPATIAL_CASES = [SPATIAL.cases[1], SPATIAL.cases[0]];
+let task = Math.min(SPATIAL_CASES.length - 1, +qs.get('task') || 0), view = qs.get('view') === 'rgb' ? 'rgb' : 'cloud';
+
+$('#taskSeg').innerHTML = SPATIAL_CASES.map((c,i) => `<button data-i="${i}" aria-pressed="${i===task}">${c.title}</button>`).join('');
+$('#spQuad').innerHTML = ['nsl','tradsl','da2','gt'].map((k,i) => `
+  <div class="tile" style="--c:${COLOR[['NSL','TradSL','DA2','GT'][i]]}">
+    <img alt="" decoding="async"><span class="tag">${['NSL','TradSL','DA2','GT'][i]}</span>
+  </div>`).join('');
+const spTiles = [...$('#spQuad').children];
+
+function drawMap(c){
+  const scene = SPATIAL.scenes[c.scene], [W,H] = scene.size;
+  const [xmin,ymin,xmax,ymax] = scene.bounds, ppm = W/(xmax-xmin);
+  const P = (x,y) => [(x-xmin)*ppm, (ymax-y)*ppm];
+  // crop to the camera path and the question's objects, then match the panel's shape
+  const pts = scene.frames.map(f => P(f[0],f[1])).concat(c.objects.map(o => P(o.xy[0],o.xy[1])));
+  let x0 = Math.min(...pts.map(p=>p[0])), x1 = Math.max(...pts.map(p=>p[0]));
+  let y0 = Math.min(...pts.map(p=>p[1])), y1 = Math.max(...pts.map(p=>p[1]));
+  const pad = 1.1*ppm; x0 -= pad; x1 += pad; y0 -= pad; y1 += pad;
+  y0 -= (y1-y0)*.16;   // headroom for the legend in the top-left corner
+  const aspect = 666/960; let w = x1-x0, h = y1-y0;
+  if (w/h > aspect) { const nh = w/aspect; y0 -= (nh-h)/2; h = nh; } else { const nw = h*aspect; x0 -= (nw-w)/2; w = nw; }
+  const u = w/100;   // drawing unit: 1% of the visible width
+  const svg = $('#spMap');
+  svg.setAttribute('viewBox', `${x0} ${y0} ${w} ${h}`);
+  const path = scene.frames.map(f => P(f[0],f[1]).map(v=>v.toFixed(1)).join(',')).join(' ');
+  // each method's chosen viewpoint: a view cone in the method's colour, labelled with its name;
+  // methods that picked the same frame share the cone, split into slices
+  const byFrame = {};
+  c.methods.forEach(m => (byFrame[m.frame] = byFrame[m.frame] || []).push(m));
+  const fs = 3.1*u, R = 11*u, HALF = 30;
+  const at = (x,y,deg,r) => [x + Math.cos(deg*Math.PI/180)*r, y + Math.sin(deg*Math.PI/180)*r];
+  const cones = [], chips = [];
+  const shared = Object.keys(byFrame).length === 1;   // all four looked at the very same frame
+  const tw = t => [...t].reduce((a,ch) => a + (ch.charCodeAt(0) > 255 ? 1 : .62)*fs, 0);
+  Object.entries(byFrame).forEach(([fid, ms]) => {
+    const f = scene.frames[+fid], [px,py] = P(f[0],f[1]);
+    const ang = Math.atan2(-f[3], f[2]) * 180/Math.PI;   // image y points down
+    const step = 2*HALF/ms.length;
+    if (shared) {
+      const [x1,y1] = at(px,py,ang-HALF,R), [x2,y2] = at(px,py,ang+HALF,R);
+      cones.push(`<path d="M${px} ${py}L${x1} ${y1}A${R} ${R} 0 0 1 ${x2} ${y2}Z" fill="#fff" fill-opacity=".45" stroke="#fff" stroke-width="${.45*u}" stroke-linejoin="round"/>`);
+    } else ms.forEach((m,j) => {
+      const a1 = ang - HALF + j*step, a2 = a1 + step, [x1,y1] = at(px,py,a1,R), [x2,y2] = at(px,py,a2,R);
+      cones.push(`<path d="M${px} ${py}L${x1} ${y1}A${R} ${R} 0 0 1 ${x2} ${y2}Z" fill="${COLOR[m.id]}" fill-opacity=".5" stroke="${COLOR[m.id]}" stroke-width="${.45*u}" stroke-linejoin="round"/>`);
+    });
+    cones.push(`<circle cx="${px}" cy="${py}" r="${1.1*u}" fill="#fff" stroke="#141413" stroke-width="${.4*u}"/>`);
+    // name chip just beyond the cone, kept inside the visible area
+    const items = shared ? [{label:'四组同一观测帧', w: tw('四组同一观测帧')}]
+                         : ms.map(m => ({label:m.id, color:COLOR[m.id], w: 2.2*u + tw(m.id)}));
+    const cw = items.reduce((t,it) => t + it.w, 0) + (items.length-1)*1.6*u + 2.6*u, ch = fs*1.7;
+    const [cx,cy] = at(px,py,ang,R + 4.5*u);
+    chips.push({px, py, cx, cy, cw, ch, items});
+  });
+  // nudge chips apart so labels of nearby viewpoints never overlap, then keep them in view
+  const clamp = k => { k.cx = Math.max(x0 + k.cw/2 + u, Math.min(x0 + w - k.cw/2 - u, k.cx));
+                       k.cy = Math.max(y0 + k.ch/2 + u, Math.min(y0 + h - k.ch/2 - u, k.cy)); };
+  // the question's objects (diamond + name) are fixed obstacles; try spots around the camera
+  // until the chip clears every obstacle and every chip already placed
+  const blocks = c.objects.map(o => { const [ox,oy] = P(o.xy[0],o.xy[1]), lw = tw(o.name)*3.3/3.1;
+    return {cx: ox, cy: oy - 2.6*u, cw: Math.max(lw, 3.6*u) + u, ch: 7.4*u}; });
+  const hit = (a,b) => (a.cw+b.cw)/2 + .6*u > Math.abs(a.cx-b.cx) && (a.ch+b.ch)/2 + .6*u > Math.abs(a.cy-b.cy);
+  chips.forEach(k => {
+    const base = Math.atan2(k.cy-k.py, k.cx-k.px)*180/Math.PI;
+    let first = null;
+    for (const r of [R+4.5*u, R+9*u, R+14*u]) for (const da of [0,180,90,-90,45,-45,135,-135]) {
+      const [x,y] = at(k.px,k.py,base+da,r), cand = {...k, cx:x, cy:y}; clamp(cand);
+      first = first || cand;
+      if (![...blocks, ...chips.filter(o => o.placed)].some(o => hit(cand,o))) { Object.assign(k, cand, {placed:true}); return; }
+    }
+    Object.assign(k, first, {placed:true});
+  });
+  const chipSvg = chips.map(k => {
+    let x = k.cx - k.cw/2 + 1.2*u;
+    const parts = k.items.map(it => {
+      const tx = it.color ? x + 2.2*u : x + .1*u;
+      const g = (it.color ? `<circle cx="${x + .8*u}" cy="${k.cy}" r="${.85*u}" fill="${it.color}"/>` : '')
+        + `<text x="${tx}" y="${k.cy + fs*.36}" font-size="${fs}" font-weight="700" fill="#fff">${it.label}</text>`;
+      x += it.w + 1.6*u; return g;
+    }).join('');
+    return `<line x1="${k.px}" y1="${k.py}" x2="${k.cx}" y2="${k.cy}" stroke="#141413" stroke-opacity=".7" stroke-width="${.35*u}"/>
+      <rect x="${k.cx-k.cw/2}" y="${k.cy-k.ch/2}" width="${k.cw}" height="${k.ch}" rx="${.9*u}" fill="#141413" fill-opacity=".85"/>${parts}`;
+  }).join('');
+  const arrows = cones.join('') + `<g font-family="Noto Sans SC, PingFang SC, sans-serif">${chipSvg}</g>`;
+  const objs = c.objects.map(o => {
+    const [px,py] = P(o.xy[0],o.xy[1]), s = 1.8*u;
+    return `<path d="M${px} ${py-s}L${px+s} ${py}L${px} ${py+s}L${px-s} ${py}Z" fill="#F2C94C" stroke="#141413" stroke-width="${.35*u}"/>
+      <text x="${px}" y="${py - s - 1.1*u}" text-anchor="middle" font-size="${3.3*u}" font-family="Noto Sans SC, PingFang SC, sans-serif" font-weight="700" fill="#fff" stroke="#141413" stroke-width="${.9*u}" paint-order="stroke">${o.name}</text>`;
+  }).join('');
+  svg.innerHTML = `<rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="#B49C84"/>
+    <image href="media/spatial/${c.scene}.webp" x="0" y="0" width="${W}" height="${H}"/>
+    <rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="#141413" opacity=".22"/>
+    <polyline points="${path}" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="${.5*u}" stroke-dasharray="${1.2*u} ${1*u}" stroke-linecap="round"/>
+    ${arrows}${objs}`;
+}
+function spRender(){
+  const c = SPATIAL_CASES[task];
+  $('#spCap').innerHTML = `<b>${c.q}</b>`;
+  c.methods.forEach((m,i) => {
+    const t = spTiles[i], img = t.querySelector('img');
+    img.className = view === 'cloud' ? 'recon' : '';
+    img.alt = `${m.id} ${view === 'cloud' ? '点云' : '原图'}`;
+  });
+  $('#spResults').innerHTML = c.methods.map(m => `<li style="--c:${COLOR[m.id]}"><b>${m.id}</b>${m.ans}<span class="${m.ok?'ok':'no'}">${m.ok?'✓':'✗'}</span></li>`).join('')
+    + `<li class="gt">正确答案 <strong>${c.gt}</strong></li>`;
+  $('#spKey').innerHTML = KEY_PATH;
+  drawMap(c);
+}
+function segGroup(el, fn){
+  el.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    el.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x===b));
+    fn(b);
+  });
+}
+segGroup($('#taskSeg'), b => { task = +b.dataset.i; spRender(); spRenderLazy(); });
+segGroup($('#viewSeg'), b => { view = b.dataset.v; spRender(); spRenderLazy(); });
+document.querySelectorAll('#viewSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v===view));
+let spatialReady = false, spatialRenderSeq = 0;
+function spAsset(c,m){
+  return view === 'rgb' ? `media/spatial/${c.id}-rgb.webp` : `media/spatial/${c.id}-${m.key}-cloud.webp`;
+}
+function spRenderLazy(){
+  const c = SPATIAL_CASES[task];
+  c.methods.forEach((m,i) => {
+    const img = spTiles[i].querySelector('img');
+    img.loading = 'lazy'; img.decoding = 'async';
+    const target = spAsset(c,m);
+    img.src = target;
+  });
+  if (!spatialReady) { $('#spFig').classList.add('deferred'); return; }
+  $('#spFig').classList.remove('deferred');
+  const token = ++spatialRenderSeq;
+  $('#spFig').classList.add('loading');
+  Promise.all(spTiles.map(t => new Promise(resolve => { const img=t.querySelector('img'); if (img.complete) resolve(); else { img.addEventListener('load',resolve,{once:true}); img.addEventListener('error',resolve,{once:true}); } }))).then(() => { if (token===spatialRenderSeq) $('#spFig').classList.remove('loading'); });
+}
+spRender();
+spRenderLazy();
+function activateSpatial(){
+  if (spatialReady) return;
+  spatialReady = true;
+  $('#spFig').classList.remove('deferred');
+  spRender(); spRenderLazy();
+}
+function maybeActivateSpatial(){
+  const r = $('#spFig').getBoundingClientRect();
+  if (r.top <= innerHeight + 600) {
+    activateSpatial();
+    removeEventListener('scroll', maybeActivateSpatial);
+  }
+}
+setTimeout(() => {
+  new IntersectionObserver((entries, observer) => {
+    if (!entries.some(e => e.isIntersecting && e.boundingClientRect.top >= 0)) return;
+    observer.disconnect(); activateSpatial();
+  }, {rootMargin:'0px 0px 600px 0px'}).observe($('#spFig'));
+  addEventListener('scroll', maybeActivateSpatial, {passive:true});
+  maybeActivateSpatial();
+  new IntersectionObserver((entries, observer) => {
+    if (!entries.some(e => e.isIntersecting && e.boundingClientRect.top >= 0) || navStarted) return;
+    navStarted = true; observer.disconnect(); load();
+  }, {rootMargin:'0px 0px 600px 0px'}).observe($('#navFig'));
+}, 900);
+
+render(0);
+requestAnimationFrame(tick);
+})();
+</script>
+<script>
+/* ================= depth comparison =================
+   Real-camera scenes compared pixel by pixel. Six synced views; data from depth-comparison/pixels. */
+(() => {
+const $ = s => document.querySelector(s);
+const W = 1280, H = 720, N = W*H;
+const CMAP = '5e4fa25c51a35a53a45855a55757a6555aa7535ca8515ea95060aa4e63ab4c65ac4b67ad4969ae476caf456eb04470b14272b24075b43e77b53d79b63b7bb7397db83880b93682ba3484bb3286bc3389bc358bbb378dba398fb93b92b83d94b73f96b64199b5439bb5459db4479fb349a2b24ba4b14da6b04fa8af51abae53adad55afac57b2ab59b4aa5bb6a95db8a85fbba761bda663bfa566c2a568c3a46bc4a46ec5a470c6a473c7a476c8a478c9a47bcaa47ecba481cca483cda486cea489cfa48bd0a48ed1a491d2a493d3a496d5a499d6a49cd7a49ed8a4a1d9a4a4daa4a6dba4a9dca4acdda3aedea3b0dfa2b3e0a2b5e1a1b7e2a1bae3a0bce4a0bee5a0c0e59fc3e69fc5e79ec7e89ecae99dccea9dceeb9cd1ec9cd3ed9bd5ee9bd8ef9adaf09adcf199dff299e1f398e3f498e6f598e6f599e7f59be8f69ce9f69eeaf69febf7a1ecf7a2edf8a4eef8a5eff8a7f0f9a8f1f9aaf2faabf3faadf4faaef5fbb0f6fbb2f7fcb3f8fcb5f9fcb6fafdb8fbfdb9fcfebbfdfebcfefebefefebdfefdbbfefbb9fefab7fef9b5fef8b3fef7b1fef5affef4adfef3abfef2a9fef1a7feefa5feeea3feeda1feec9ffeea9dfee99bfee899fee797fee695fee493fee391fee28ffee18dfee08bfdde89fddc87fdda86fdd884fdd682fdd481fdd27ffdd07dfdce7cfdcc7afdca78fdc877fdc675fdc473fdc272fdc070fdbe6ffdbc6dfdba6bfdb86afdb668fdb466fdb265fdb063fdae61fcac60fcaa5ffca75efba55cfba25bfb9f5afa9d59fa9a58fa9857f99555f99354f89053f88e52f88b51f7894ff7864ef7834df6814cf67e4bf67c4af57948f57747f57446f47245f46f44f46d43f26b43f16943f06744ef6544ed6345ec6145eb6046ea5e46e95c47e75a47e65848e55648e45549e25349e1514ae04f4adf4d4bde4b4bdc494bdb484cda464cd9444dd8424dd6404ed53e4ed33c4ed13a4ecf384dcd354dcb334cc9304cc62e4bc42c4bc2294ac0274abe2449bc2249ba2048b71d48b51b47b31847b11646af1446ad1145aa0f45a80c44a60a44a40843a20543a003429e0142'.match(/.{6}/g).map(h => [0,2,4].map(i => parseInt(h.slice(i,i+2),16)));
+const VIEWS = [
+  {k:'ir', name:'Reference', c:'#FAF9F5'}, {k:'gt', name:'Ground truth', c:'var(--gt)'},
+  {k:'nsl', name:'NSL', c:'var(--nsl)'}, {k:'lingbot', name:'LingBot-Depth', c:'var(--lingbot)'},
+  {k:'da2', name:'DA2', c:'var(--da2)'}, {k:'raw', name:'Raw depth', c:'var(--raw)'},
+];
+const METHODS = ['nsl','lingbot','da2','raw'];
+const SCENES = ['d435i-merged/000005','d435i-merged/000003','gemini335l/000009','gemini335l/000004','gemini335l/000014','gemini335l/000012','gemini335l/000006','gemini335l/000008'];
+const SCENE_NAMES = ['纸杯','矿泉水瓶','黑色瓶子','玻璃罐','烧水壶','手机','玩具车','玻璃杯'];
+const label = id => SCENE_NAMES[SCENES.indexOf(id)];
+const short = id => SCENE_NAMES[SCENES.indexOf(id)];
+const HOLE = [24,36,48], EDGE = [140,185,180];
+
+const qs = new URLSearchParams(location.search);
+let scene = SCENES.includes(qs.get('scene')) ? qs.get('scene') : SCENES[0];
+let mode = qs.get('mode') === 'off' ? 'off' : 'on';
+let scale = 1, px = 0, py = 0, lo = 450, hi = 2600, csrc = 'gt';
+const data = {}, masks = {}, outlines = {}, src = {}, cvs = {};
+
+$('#dcScene').innerHTML = SCENES.map(id => `<button data-s="${id}" aria-pressed="${id===scene}">${short(id)}</button>`).join('');
+$('#dcGrid').innerHTML = VIEWS.map(v => `<div class="tile w" style="--c:${v.c}"><canvas width="${W}" height="${H}"></canvas><span class="tag">${v.name}</span><span class="chip" id="dc-${v.k}" hidden></span></div>`).join('');
+VIEWS.forEach((v,i) => {
+  cvs[v.k] = $('#dcGrid').children[i].querySelector('canvas');
+  src[v.k] = Object.assign(document.createElement('canvas'), {width:W, height:H});
+});
+
+/* ---------- drawing, synced zoom/pan ---------- */
+function clampPan(){ if (scale === 1) { px = py = 0; } const mx = W*(scale-1)/2, my = H*(scale-1)/2; px = Math.max(-mx, Math.min(mx, px)); py = Math.max(-my, Math.min(my, py)); }
+function draw(){
+  clampPan();
+  $('#dcStage').classList.toggle('zoomed', scale > 1);
+  $('#dcZoom').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', Math.abs(+b.dataset.z - scale) < .05));
+  blit(); scheduleRange();
+}
+function blit(){
+  VIEWS.forEach(v => { const c = cvs[v.k].getContext('2d'); c.imageSmoothingEnabled = false; c.fillStyle = '#182430'; c.fillRect(0,0,W,H);
+    c.drawImage(src[v.k], W*(1-scale)/2 + px, H*(1-scale)/2 + py, W*scale, H*scale); });
+}
+function zoomTo(next, cx = 0, cy = 0){   // cx, cy: focus point relative to canvas centre, in pixels
+  next = Math.max(1, Math.min(4, next)); const r = next/scale;
+  px = cx - (cx - px)*r; py = cy - (cy - py)*r; scale = next; draw();
+}
+$('#dcGrid').querySelectorAll('.tile').forEach(tile => {
+  const at = e => { const b = tile.getBoundingClientRect(); return [(e.clientX-b.left)*W/b.width - W/2, (e.clientY-b.top)*H/b.height - H/2]; };
+  let last = null;
+  tile.addEventListener('pointerdown', e => { if (scale === 1 && e.pointerType === 'touch') return; last = [e.clientX, e.clientY]; tile.setPointerCapture(e.pointerId); });
+  tile.addEventListener('pointermove', e => { if (!last) return; px += (e.clientX-last[0])*W/tile.clientWidth; py += (e.clientY-last[1])*H/tile.clientHeight; last = [e.clientX, e.clientY]; draw(); });
+  const end = () => last = null; tile.addEventListener('pointerup', end); tile.addEventListener('pointercancel', end);
+  tile.addEventListener('dblclick', e => { e.preventDefault(); zoomTo(scale >= 4 ? 1 : scale*2, ...at(e)); });
+  // trackpad pinch (ctrl+wheel) zooms; a plain wheel only zooms once already zoomed in, so the page still scrolls
+  tile.addEventListener('wheel', e => { if (!e.ctrlKey && scale === 1) return; e.preventDefault(); zoomTo(scale*(e.deltaY < 0 ? 1.12 : 1/1.12), ...at(e)); }, {passive:false});
+});
+
+/* ---------- depth processing (same rules as the original viewer) ---------- */
+function edge(d, t, r){
+  const b = new Uint8Array(N);
+  for (let y=0;y<H;y++) for (let x=0;x<W;x++){ const i=y*W+x; if(!(d[i]>0&&isFinite(d[i]))) continue;
+    for (const j of [x<W-1?i+1:-1, y<H-1?i+W:-1]) if (j>=0&&d[j]>0&&isFinite(d[j])&&Math.abs(d[i]-d[j])>t){ b[i]=1; b[j]=1; } }
+  if (!r) return b;
+  const sum = new Int32Array((W+1)*(H+1)), out = new Uint8Array(N);
+  for (let y=0;y<H;y++){ let row=0; for (let x=0;x<W;x++){ row+=b[y*W+x]; sum[(y+1)*(W+1)+x+1]=sum[y*(W+1)+x+1]+row; } }
+  for (let y=0;y<H;y++) for (let x=0;x<W;x++){ const a=Math.max(0,x-r), bb=Math.min(W,x+r+1), c=Math.max(0,y-r), dd=Math.min(H,y+r+1);
+    out[y*W+x] = sum[dd*(W+1)+bb]-sum[c*(W+1)+bb]-sum[dd*(W+1)+a]+sum[c*(W+1)+a] > 0; }
+  return out;
+}
+function outline(depth, mask){
+  const valid = new Uint8Array(N), line = new Uint8Array(N);
+  for (let i=0;i<N;i++) valid[i] = !mask?.[i] && Number.isFinite(depth[i]) && depth[i] > 0;
+  for (let i=0;i<N;i++){ if (valid[i]) continue; const x=i%W;
+    line[i] = (x>0&&valid[i-1]) || (x+1<W&&valid[i+1]) || (i>=W&&valid[i-W]) || (i+W<N&&valid[i+W]); }
+  return line;
+}
+function openContour(valid, radius){
+  let a = valid.slice(), b = new Uint8Array(N);
+  for (const erode of [true,false]) for (let pass=0; pass<radius; pass++){
+    const square = (erode ? pass : radius-1-pass) % 2 === 1;
+    for (let y=0;y<H;y++){ const top=Math.max(0,y-1)*W, row=y*W, bot=Math.min(H-1,y+1)*W;
+      for (let x=0;x<W;x++){ const i=row+x; if (a[i]!==Number(erode)){ b[i]=a[i]; continue; }
+        const l=Math.max(0,x-1), r=Math.min(W-1,x+1);
+        const s = a[top+x]+a[bot+x]+a[row+l]+a[row+r] + (square ? a[top+l]+a[top+r]+a[bot+l]+a[bot+r] : 0);
+        b[i] = erode ? s === (square?8:4) : s > 0; } }
+    [a,b] = [b,a];
+  }
+  return a;
+}
+function smoothNsl(base, strength){
+  const valid = new Uint8Array(N), out = base.slice();
+  for (let i=0;i<N;i++) valid[i] = !base[i] && Number.isFinite(data.nsl[i]) && data.nsl[i] > 0;
+  for (let y=0;y<H;y++){ const up=Math.max(0,y-1)*W, row=y*W, dn=Math.min(H-1,y+1)*W;
+    for (let x=0;x<W;x++){ if (!valid[row+x]) continue; const l=Math.max(0,x-1), r=Math.min(W-1,x+1);
+      if (valid[up+l]+valid[up+x]+valid[up+r]+valid[row+l]+valid[row+x]+valid[row+r]+valid[dn+l]+valid[dn+x]+valid[dn+r] < 5) out[row+x]=1; } }
+  for (let i=0;i<N;i++) valid[i] = valid[i] && !out[i];
+  const opened = openContour(valid, strength);
+  for (let i=0;i<N;i++) if (valid[i] && !opened[i]) out[i]=1;
+  return out;
+}
+function decodeDepth(buf){
+  if (buf.byteLength !== N*4) throw Error('深度尺寸不符');
+  const bytes = new Uint8Array(buf), bits = new Uint32Array(N);
+  for (let y=0;y<H;y++){ let prev=0; for (let x=0;x<W;x++){ const i=y*W+x;
+    prev ^= bytes[i] | (bytes[N+i]<<8) | (bytes[2*N+i]<<16) | (bytes[3*N+i]<<24); bits[i]=prev; } }
+  return new Float32Array(bits.buffer);
+}
+
+/* ---------- colour + metrics ---------- */
+const stats = {};
+function paint(){
+  for (const k of ['gt', ...METHODS]){
+    const d = data[k], mask = masks[k], line = outlines[k], im = new ImageData(W,H), px8 = im.data;
+    let total=0, count=0, err=0;
+    for (let i=0;i<N;i++){
+      const valid = isFinite(d[i]) && d[i] > 0 && !(mask && mask[i]);
+      const rgb = valid ? CMAP[Math.max(0, Math.min(255, Math.floor((d[i]-lo)/(hi-lo)*256)))] : line && line[i] ? EDGE : HOLE;
+      px8[i*4]=rgb[0]; px8[i*4+1]=rgb[1]; px8[i*4+2]=rgb[2]; px8[i*4+3]=255;
+      if (k !== 'gt' && data.gt[i] > 0 && isFinite(data.gt[i])){ total++; if (valid){ count++; err += Math.abs(d[i]-data.gt[i]); } }
+    }
+    src[k].getContext('2d').putImageData(im,0,0);
+    if (k !== 'gt') stats[k] = {mae: count ? err/count : NaN, cov: total ? count/total*100 : NaN};
+  }
+}
+function showStats(){
+  METHODS.forEach(k => { const el = $('#dc-'+k), st = stats[k]; el.hidden = false;
+    el.innerHTML = `<span title="在有 GT 且保留有效预测的像素上计算，越小越好">平均绝对误差（MAE） <b>${isFinite(st.mae) ? st.mae.toFixed(2) : '—'}</b> mm</span><span title="有效 GT 像素中，保留有效预测的比例">有效深度覆盖率 <b>${isFinite(st.cov) ? st.cov.toFixed(2) : '—'}</b>%</span>`; });
+}
+function showKey(){ $('#dcKey').innerHTML = `${lo} mm<i></i>${hi} mm`; }
+// colour range follows the reference depth (NSL or GT) visible in the current view (2nd–98th percentile)
+let rangeTimer = null, lastView = '';
+function scheduleRange(){ if (!data.nsl) return; const sig = [scale,px,py].join(); if (sig === lastView) return; lastView = sig; clearTimeout(rangeTimer); rangeTimer = setTimeout(autoRange, 140); }
+function autoRange(){ if (computeRange()) { paint(); showKey(); blit(); } }
+function computeRange(){
+  const d = data[csrc], m = masks[csrc], v = [];
+  for (let y=0;y<H;y+=2) for (let x=0;x<W;x+=2){ const sx=W*(1-scale)/2+px+x*scale, sy=H*(1-scale)/2+py+y*scale, i=y*W+x;
+    if (sx>=0&&sx<W&&sy>=0&&sy<H&&d[i]>0&&isFinite(d[i])&&!(m&&m[i])) v.push(d[i]); }
+  if (!v.length) return false;
+  v.sort((a,b) => a-b);
+  const n = Math.floor(v[Math.floor(v.length*.02)]), f = Math.max(n+1, Math.ceil(v[Math.floor(v.length*.98)]));
+  if (n === lo && f === hi) return false;
+  lo = n; hi = f; return true;
+}
+
+/* ---------- loading ---------- */
+const cache = {}; let seq = 0;
+async function fetchScene(id, m){
+  const key = id+'-'+m; if (cache[key]) return cache[key];
+  const entries = await Promise.all(['gt','nsl','raw','lingbot','da2'].map(async k => {
+    const r = await fetch(`depth-comparison/pixels/${id}/${['raw','gt'].includes(k) ? k : k+'-'+m}.bin.gz`);
+    if (!r.ok) throw Error('载入失败');
+    const buf = await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+    const vals = k === 'raw' ? new Uint16Array(buf) : decodeDepth(buf);
+    if (vals.length !== N) throw Error('深度尺寸不符');
+    return [k, vals];
+  }));
+  const img = new Image(); await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(Error('载入失败')); img.src = `depth-comparison/pixels/${id}/ir-${m}.png`; });
+  const keys = Object.keys(cache); if (keys.length >= 3) delete cache[keys[0]];
+  return cache[key] = {depth: Object.fromEntries(entries), img};
+}
+function syncUrl(){ const u = new URL(location.href); u.searchParams.set('scene', scene); u.searchParams.set('mode', mode); u.hash = 'depth'; history.replaceState(null, '', u); }
+async function load(){
+  const s = ++seq;
+  $('#dcVeil').classList.add('on');
+  $('#dcCap').innerHTML = `<b>${label(scene)}</b>`;
+  $('#dcVeil').innerHTML = `<div>${data.gt ? '正在切换…' : '加载中…'}</div>`;
+  try {
+    const sc = await fetchScene(scene, mode);
+    if (s !== seq) return;
+    Object.assign(data, sc.depth);
+    src.ir.getContext('2d').drawImage(sc.img, 0, 0, W, H);
+    for (const k of ['lingbot','da2']) masks[k] = edge(data[k], 100, 2);
+    masks.raw = null; masks.gt = null;
+    masks.nsl = smoothNsl(edge(data.nsl, 100, 1), 4);
+    for (const k of METHODS) outlines[k] = outline(data[k], masks[k]);
+    outlines.gt = null;
+    scale = 1; px = py = 0; lastView = [1,0,0].join();
+    lo = 450; hi = 2600; computeRange(); paint(); showStats(); showKey(); draw();
+    $('#dcVeil').classList.remove('on');
+  } catch (e) {
+    if (s === seq) $('#dcVeil').innerHTML = `<div>${e.message}<small>刷新页面重试</small></div>`;
+  }
+}
+function segGroup(el, fn){ el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  el.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x===b)); fn(b); }); }
+segGroup($('#dcScene'), b => { scene = b.dataset.s; syncUrl(); load(); });
+segGroup($('#dcMode'), b => { mode = b.dataset.m; syncUrl(); load(); });
+$('#dcZoom').addEventListener('click', e => { const b = e.target.closest('button'); if (b) zoomTo(+b.dataset.z); });
+segGroup($('#dcSource'), b => { csrc = b.dataset.src; if (data.gt && computeRange()) { paint(); showKey(); blit(); } });
+$('#dcMode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.m===mode));
+
+// several MB per scene: start once the section is visible or close to the viewport.
+// The two-sided margin also covers direct links to #depth after the browser restores scroll.
+let depthStarted = false;
+function startDepth(){ if (depthStarted) return; depthStarted = true; load(); }
+setTimeout(() => {
+  const fig = $('#dcFig');
+  const io = new IntersectionObserver(es => {
+    if (es.some(e => e.isIntersecting)) { io.disconnect(); startDepth(); }
+  }, {rootMargin:'600px 0px'});
+  io.observe(fig);
+  const checkDepthPosition = () => {
+    const r = fig.getBoundingClientRect();
+    if (r.bottom >= -600 && r.top <= innerHeight + 600) {
+      startDepth(); removeEventListener('scroll', checkDepthPosition);
+    }
+  };
+  addEventListener('scroll', checkDepthPosition, {passive:true});
+  checkDepthPosition();
+}, 250);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,4144 @@
+{
+  "fps": 25,
+  "depth": {
+    "colormap": "Spectral_r",
+    "range_m": [
+      0.15,
+      1.2
+    ],
+    "units": "m",
+    "convention": "optical_axis",
+    "alignment": "RGB frame i and recorded depth step i; absent depth observations, including predicted-depth terminal observations, repeat the most recent recorded depth frame. Holds are listed per method. Black denotes invalid measured depth pixels. Paired GT replay captures RGB and depth together including its final frame.",
+    "invalid": "black",
+    "sourceLut": "navigation-original.html const CMAP"
+  },
+  "methods": [
+    {
+      "id": "nsl",
+      "key": "nsl",
+      "name": "NSL",
+      "video": "nsl-rgb.mp4",
+      "depthVideo": "nsl-depth.mp4",
+      "depthPoster": "nsl-depth-poster.jpg",
+      "poster": "nsl-poster.jpg",
+      "duration": 19.8,
+      "frames": 495,
+      "actions": 494,
+      "turns": 39,
+      "score": 100.0,
+      "success": true,
+      "events": [
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 1,
+          "type": "tool",
+          "title": "task · state · look · find · measure",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "task",
+            "state",
+            "look",
+            "find",
+            "measure"
+          ],
+          "callCounts": {
+            "task": 1,
+            "state": 1,
+            "look": 1,
+            "find": 1,
+            "measure": 1
+          },
+          "code": "robot.measure('tube rack')\nrobot.state()\nrobot.look('all', tile=True)",
+          "receipt": "step 0 of 500 (500 left)\nMask#1 head 'tube' score 0.41  centroid (386, 268)  box (358, 246)-(413, 287)  871 px"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 2,
+          "type": "tool",
+          "title": "measure · look · to_world",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "measure",
+            "measure",
+            "measure",
+            "measure",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "measure": 4,
+            "look": 1,
+            "to_world": 9
+          },
+          "code": "robot.measure(('head',(214,196)))\nrobot.measure(('head',(490,198)))\nrobot.measure(('head',(386,268)))",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 3,
+          "type": "tool",
+          "title": "camera · to_world · to_pixel",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "camera",
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_pixel"
+          ],
+          "callCounts": {
+            "camera": 2,
+            "to_world": 9,
+            "to_pixel": 1
+          },
+          "code": "robot.to_world('head',(216,195),pair=('left_wrist',(389,269)))\nrobot.camera('head')\nrobot.camera('left_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 4,
+          "type": "tool",
+          "title": "to_world · goto",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "to_world": 17,
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-0.24,-0.01,0.87),pitch=90,yaw=20,dry_run=True)\nrobot.goto('left',(-0.08,0.025,0.92),pitch=0,yaw=20,dry_run=True)",
+          "receipt": "Move left (dry run): reachable, 16 steps by line  target (-0.240, -0.010, 0.870) pitch 90 yaw 20 roll 0\nMove left (dry run): reachable, 16 steps by line  target (-0.080, 0.025, 0.920) pitch 0 yaw 20 roll 0"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 16,
+          "turn": 5,
+          "type": "tool",
+          "title": "to_world · goto · look",
+          "detail": "记录的工具调用；动作步 0–16",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "to_world": 9,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-0.236,-0.014,0.885),pitch=90,yaw=-20,grip='open')\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.236, -0.014, 0.884) pitch 90 yaw -20 roll 0  ±1 mm 0°  16 steps (line)  [484 steps left]"
+        },
+        {
+          "frame": 16,
+          "action": 16,
+          "stepEnd": 36,
+          "turn": 6,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 16–36",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-0.237,-0.011,0.789),pitch=90,yaw=-20,path='line')\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.237, -0.011, 0.789) pitch 90 yaw -20 roll 0  ±1 mm 0°  6 steps (line)  [478 steps left]\nGrip left: closed on something ~3.2 cm wide (holding)  7 steps  [471 steps left]"
+        },
+        {
+          "frame": 36,
+          "action": 36,
+          "stepEnd": 63,
+          "turn": 7,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 36–63",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-.237,-.06,.955),pitch=0,yaw=-20,gentle=True)\nrobot.look('all',tile=True)\nrobot.state()",
+          "receipt": "Move left: at (-0.237, -0.060, 0.955) pitch 0 yaw -20 roll 0  ±0 mm 0°  27 steps (line)  [437 steps left]\nstep 63 of 500 (437 left)"
+        },
+        {
+          "frame": 63,
+          "action": 63,
+          "stepEnd": 72,
+          "turn": 8,
+          "type": "tool",
+          "title": "to_world · goto · look",
+          "detail": "记录的工具调用；动作步 63–72",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "to_world": 3,
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.look('head',crop=(250,135,380,240),zoom=3)\nrobot.look('left_wrist')",
+          "receipt": "Move left: at (-0.069, -0.047, 0.916) pitch 0 yaw -20 roll 0  ±2 mm 0°  9 steps (line)  [428 steps left]"
+        },
+        {
+          "frame": 72,
+          "action": 72,
+          "stepEnd": 76,
+          "turn": 9,
+          "type": "tool",
+          "title": "look · to_world · goto",
+          "detail": "记录的工具调用；动作步 72–76",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "look": 2,
+            "to_world": 4,
+            "goto": 1
+          },
+          "code": "robot.look('head')\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.066, -0.047, 0.859) pitch 0 yaw -20 roll 0  ±3 mm 0°  4 steps (line)  [424 steps left]"
+        },
+        {
+          "frame": 76,
+          "action": 76,
+          "stepEnd": 86,
+          "turn": 10,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 76–86",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.look('left_wrist')\nrobot.state()",
+          "receipt": "Move left: BLOCKED — at (-0.066, -0.045, 0.846) pitch -2 yaw -20 roll -1, 15 mm / 2° from (-0.067, -0.047, 0.831) pitch 0 yaw -20 roll 0  10 steps  [414 steps left]\nstep 86 of 500 (414 left)"
+        },
+        {
+          "frame": 86,
+          "action": 86,
+          "stepEnd": 86,
+          "turn": 11,
+          "type": "tool",
+          "title": "look · find · to_world",
+          "detail": "记录的工具调用；动作步 86–86",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "look",
+            "find",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "look": 1,
+            "find": 1,
+            "to_world": 14
+          },
+          "code": "robot.look('head',crop=(265,145,377,239),zoom=4)\nrobot.find('head','tube')",
+          "receipt": "Mask#8 head 'tube' score 0.35  centroid (385, 268)  box (358, 246)-(413, 287)  868 px\nMask#9 head 'tube' score 0.34  centroid (274, 182)  box (256, 163)-(292, 204)  735 px"
+        },
+        {
+          "frame": 86,
+          "action": 86,
+          "stepEnd": 99,
+          "turn": 12,
+          "type": "tool",
+          "title": "gripper · goto · look · state",
+          "detail": "记录的工具调用；动作步 86–99",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.gripper('left','open')\nrobot.goto('left',(-.15,-.16,.91),pitch=0,yaw=-20,path='line')\nrobot.look('all',tile=True)",
+          "receipt": "Grip left: open 1.00 (gap ~8.9 cm)  5 steps  [409 steps left]\nMove left: at (-0.150, -0.160, 0.910) pitch 0 yaw -20 roll 0  ±0 mm 0°  8 steps (line)  [401 steps left]"
+        },
+        {
+          "frame": 99,
+          "action": 99,
+          "stepEnd": 137,
+          "turn": 13,
+          "type": "tool",
+          "title": "goto · look · gripper",
+          "detail": "记录的工具调用；动作步 99–137",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 2,
+            "gripper": 1
+          },
+          "code": "robot.goto('right',(.383,-.007,.88),pitch=90,yaw=-23,grip='open')\nrobot.goto('right',(.383,-.007,.785),pitch=90,yaw=-23,path='line')\nrobot.look('right_wrist')",
+          "receipt": "Move right: at (0.383, -0.007, 0.880) pitch 90 yaw -23 roll 0  ±0 mm 0°  17 steps (line)  [384 steps left]\nMove right: at (0.383, -0.007, 0.785) pitch 90 yaw -23 roll 0  ±1 mm 0°  6 steps (line)  [378 steps left]"
+        },
+        {
+          "frame": 137,
+          "action": 137,
+          "stepEnd": 177,
+          "turn": 14,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 137–177",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.34,-.06,.955),pitch=0,yaw=-23,gentle=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move right: at (0.340, -0.060, 0.955) pitch 0 yaw -23 roll 0  ±0 mm 0°  26 steps (line)  [337 steps left]\nMove right: at (0.074, -0.029, 0.915) pitch 0 yaw -23 roll 0  ±3 mm 0°  14 steps (line)  [323 steps left]"
+        },
+        {
+          "frame": 177,
+          "action": 177,
+          "stepEnd": 189,
+          "turn": 15,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 177–189",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.look('right_wrist')\nrobot.state()",
+          "receipt": "Move right: BLOCKED — at (0.070, -0.028, 0.855) pitch 0 yaw -23 roll 2, 9 mm / 2° from (0.072, -0.029, 0.846) pitch 0 yaw -23 roll 0  12 steps  [311 steps left]\nstep 189 of 500 (311 left)"
+        },
+        {
+          "frame": 189,
+          "action": 189,
+          "stepEnd": 202,
+          "turn": 16,
+          "type": "tool",
+          "title": "gripper · goto · look",
+          "detail": "记录的工具调用；动作步 189–202",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.18,-.15,.92),pitch=0,yaw=-23,path='line')\nrobot.look('all',tile=True)",
+          "receipt": "Grip right: open 0.59 (gap ~4.5 cm)  5 steps  [306 steps left]\nMove right: at (0.180, -0.150, 0.920) pitch 0 yaw -23 roll 0  ±0 mm 0°  8 steps (line)  [298 steps left]"
+        },
+        {
+          "frame": 202,
+          "action": 202,
+          "stepEnd": 219,
+          "turn": 17,
+          "type": "tool",
+          "title": "look · to_world · gripper · wait",
+          "detail": "记录的工具调用；动作步 202–219",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "gripper",
+            "wait",
+            "look"
+          ],
+          "callCounts": {
+            "look": 2,
+            "to_world": 6,
+            "gripper": 1,
+            "wait": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.look('head',crop=(250,165,385,235),zoom=4)\nrobot.wait(15)",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  2 steps  [296 steps left]"
+        },
+        {
+          "frame": 219,
+          "action": 219,
+          "stepEnd": 257,
+          "turn": 18,
+          "type": "tool",
+          "title": "goto · look · gripper",
+          "detail": "记录的工具调用；动作步 219–257",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 2,
+            "gripper": 1
+          },
+          "code": "robot.goto('right',(.129,-.175,.90),pitch=90,yaw=49,grip='open')\nrobot.goto('right',(.129,-.175,.785),pitch=90,yaw=49,path='line')\nrobot.look('right_wrist')",
+          "receipt": "Move right: at (0.129, -0.175, 0.900) pitch 90 yaw 49 roll 0  ±0 mm 0°  16 steps (line)  [265 steps left]\nMove right: at (0.129, -0.175, 0.786) pitch 90 yaw 49 roll 0  ±1 mm 0°  6 steps (line)  [259 steps left]"
+        },
+        {
+          "frame": 257,
+          "action": 257,
+          "stepEnd": 296,
+          "turn": 19,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 257–296",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.13,-.16,.97),pitch=0,yaw=49,gentle=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move right: at (0.130, -0.160, 0.970) pitch 0 yaw 49 roll 0  ±0 mm 0°  23 steps (line)  [220 steps left]\nMove right: at (0.003, -0.039, 0.925) pitch 0 yaw 0 roll 0  ±0 mm 0°  16 steps (line)  [204 steps left]"
+        },
+        {
+          "frame": 296,
+          "action": 296,
+          "stepEnd": 301,
+          "turn": 20,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 296–301",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.look('right_wrist')\nrobot.look('head',crop=(250,155,380,238),zoom=4)",
+          "receipt": "Move right: at (0.002, -0.039, 0.857) pitch 0 yaw 0 roll 0  ±2 mm 0°  5 steps (line)  [199 steps left]"
+        },
+        {
+          "frame": 301,
+          "action": 301,
+          "stepEnd": 330,
+          "turn": 21,
+          "type": "tool",
+          "title": "gripper · goto · look · home",
+          "detail": "记录的工具调用；动作步 301–330",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "gripper",
+            "look",
+            "home"
+          ],
+          "callCounts": {
+            "gripper": 2,
+            "goto": 1,
+            "look": 1,
+            "home": 1
+          },
+          "code": "robot.gripper('right',.75)\nrobot.goto('right',(.002,-.16,.88),pitch=0,yaw=0,path='line')\nrobot.gripper('right','open')",
+          "receipt": "Grip right: open 0.75 (gap ~6.2 cm)  5 steps  [194 steps left]\nMove right: at (0.002, -0.158, 0.879) pitch 0 yaw 0 roll 0  ±3 mm 0°  6 steps (line)  [188 steps left]"
+        },
+        {
+          "frame": 330,
+          "action": 330,
+          "stepEnd": 330,
+          "turn": 22,
+          "type": "tool",
+          "title": "look · state · to_world · goto",
+          "detail": "记录的工具调用；动作步 330–330",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "state",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "look": 1,
+            "state": 1,
+            "to_world": 9,
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.091,-.064,.879),pitch=-15,yaw=0,roll=-20,dry_run=True)\nrobot.goto('right',(.081,-.031,.879),pitch=-5,yaw=0,roll=20,dry_run=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move left (dry run): NOT reachable  target (-0.091, -0.064, 0.879) pitch -15 yaw 0 roll -20\nMove right (dry run): reachable, 15 steps by line  target (0.081, -0.031, 0.879) pitch -5 yaw 0 roll 20"
+        },
+        {
+          "frame": 330,
+          "action": 330,
+          "stepEnd": 349,
+          "turn": 23,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 330–349",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.084,-.043,.872),pitch=-5,yaw=0,roll=15,grip=.65)\nrobot.look('all',tile=True)",
+          "receipt": "Move right: at (0.084, -0.043, 0.873) pitch -5 yaw 0 roll 15  ±1 mm 0°  15 steps (line)  [155 steps left]\nGrip right: closed on something ~2.9 cm wide (holding)  4 steps  [151 steps left]"
+        },
+        {
+          "frame": 349,
+          "action": 349,
+          "stepEnd": 352,
+          "turn": 24,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 349–352",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 1
+          },
+          "code": "robot.goto('right',(.084,-.043,.936),pitch=-5,yaw=0,roll=15,gentle=True,path='line')",
+          "receipt": ""
+        },
+        {
+          "frame": 352,
+          "action": 352,
+          "stepEnd": 352,
+          "turn": 25,
+          "type": "tool",
+          "title": "look · state · find",
+          "detail": "记录的工具调用；动作步 352–352",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "look",
+            "state",
+            "find"
+          ],
+          "callCounts": {
+            "look": 1,
+            "state": 1,
+            "find": 1
+          },
+          "code": "robot.look('all',tile=True)\nrobot.state()\nrobot.find('head','tube')",
+          "receipt": "step 352 of 500 (148 left)"
+        },
+        {
+          "frame": 352,
+          "action": 352,
+          "stepEnd": 368,
+          "turn": 26,
+          "type": "tool",
+          "title": "gripper · goto · look · to_world",
+          "detail": "记录的工具调用；动作步 352–368",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 2,
+            "look": 1,
+            "to_world": 5
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.22,-.16,.94),pitch=0,yaw=0,roll=0)\nrobot.goto('left',(-.15,-.15,.87),pitch=0,yaw=0,roll=0)",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  8 steps  [140 steps left]\nMove right: at (0.220, -0.160, 0.940) pitch 0 yaw 0 roll 0  ±0 mm 0°  8 steps (line)  [132 steps left]"
+        },
+        {
+          "frame": 368,
+          "action": 368,
+          "stepEnd": 389,
+          "turn": 27,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 368–389",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "gripper",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.15,-.16,.91),pitch=0,yaw=-20,roll=0,path='swing')\nrobot.goto('left',(-.09,-.072,.872),pitch=0,yaw=0,roll=0,grip=.65)\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.150, -0.160, 0.910) pitch 0 yaw -20 roll 0  ±0 mm 0°  9 steps (swing)  [123 steps left]\nMove left: at (-0.090, -0.072, 0.872) pitch 0 yaw 0 roll 0  ±0 mm 0°  7 steps (line)  [116 steps left]"
+        },
+        {
+          "frame": 389,
+          "action": 389,
+          "stepEnd": 400,
+          "turn": 28,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 389–400",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.070,-.047,.941),pitch=15,yaw=0,roll=30,gentle=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.070, -0.047, 0.941) pitch 15 yaw 0 roll 30  ±1 mm 0°  11 steps (line)  [100 steps left]"
+        },
+        {
+          "frame": 400,
+          "action": 400,
+          "stepEnd": 400,
+          "turn": 29,
+          "type": "tool",
+          "title": "look · to_world · state",
+          "detail": "记录的工具调用；动作步 400–400",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "state"
+          ],
+          "callCounts": {
+            "look": 1,
+            "to_world": 3,
+            "state": 1
+          },
+          "code": "robot.look('head',crop=(250,125,320,222),zoom=5)\nrobot.state()",
+          "receipt": "step 400 of 500 (100 left)"
+        },
+        {
+          "frame": 400,
+          "action": 400,
+          "stepEnd": 409,
+          "turn": 30,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 400–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.068,-.047,.89),pitch=0,yaw=0,roll=30,gentle=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.067, -0.047, 0.893) pitch 0 yaw 0 roll 30  ±3 mm 0°  9 steps (line)  [91 steps left]"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 413,
+          "turn": 31,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 409–413",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.068,-.047,.852),pitch=0,yaw=0,roll=30,gentle=True,path='line',contact=True)\nrobot.look('head',crop=(250,150,380,238),zoom=4)\nrobot.look('left_wrist')",
+          "receipt": "Move left: BLOCKED — at (-0.065, -0.047, 0.857) pitch -1 yaw 0 roll 29, 6 mm / 1° from (-0.068, -0.047, 0.852) pitch 0 yaw 0 roll 30  4 steps  [87 steps left]"
+        },
+        {
+          "frame": 413,
+          "action": 413,
+          "stepEnd": 418,
+          "turn": 32,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 413–418",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.068,-.047,.914),pitch=0,yaw=0,roll=0,gentle=True)\nrobot.look('head',crop=(250,140,380,238),zoom=4)\nrobot.look('left_wrist')",
+          "receipt": "Move left: at (-0.068, -0.047, 0.913) pitch 0 yaw 0 roll 0  ±1 mm 0°  5 steps (line)  [82 steps left]"
+        },
+        {
+          "frame": 418,
+          "action": 418,
+          "stepEnd": 430,
+          "turn": 33,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 418–430",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.068,-.047,.842),pitch=0,yaw=0,roll=0,gentle=True,path='line',contact=True)\nrobot.look('all',tile=True)",
+          "receipt": "Move left: BLOCKED — at (-0.067, -0.047, 0.848) pitch -1 yaw 0 roll -1, 6 mm / 1° from (-0.068, -0.047, 0.842) pitch 0 yaw 0 roll 0  12 steps  [70 steps left]"
+        },
+        {
+          "frame": 430,
+          "action": 430,
+          "stepEnd": 430,
+          "turn": 34,
+          "type": "tool",
+          "title": "camera · to_world · look",
+          "detail": "记录的工具调用；动作步 430–430",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 1,
+            "to_world": 5,
+            "look": 1
+          },
+          "code": "robot.camera('left_wrist')\nrobot.look('left_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 430,
+          "action": 430,
+          "stepEnd": 444,
+          "turn": 35,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 430–444",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.068,-.047,.866),pitch=0,yaw=0,roll=0,gentle=True)\nrobot.goto('left',(-.070,-.061,.866),pitch=0,yaw=0,roll=0,gentle=True)\nrobot.goto('left',(-.070,-.061,.822),pitch=0,yaw=0,roll=0,gentle=True,path='line',contact=True)",
+          "receipt": "Move left: at (-0.068, -0.047, 0.865) pitch 0 yaw 0 roll 0  ±1 mm 0°  2 steps (line)  [68 steps left]\nMove left: at (-0.070, -0.060, 0.866) pitch 0 yaw 0 roll 0  ±2 mm 0°  1 steps (line)  [67 steps left]"
+        },
+        {
+          "frame": 444,
+          "action": 444,
+          "stepEnd": 472,
+          "turn": 36,
+          "type": "tool",
+          "title": "gripper · goto · look · home",
+          "detail": "记录的工具调用；动作步 444–472",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "gripper",
+            "look",
+            "home"
+          ],
+          "callCounts": {
+            "gripper": 2,
+            "goto": 1,
+            "look": 1,
+            "home": 1
+          },
+          "code": "robot.gripper('left',.72)\nrobot.goto('left',(-.11,-.17,.895),pitch=0,yaw=0,roll=0,path='line')\nrobot.gripper('left','open')",
+          "receipt": "Grip left: open 0.72 (gap ~5.8 cm)  4 steps  [52 steps left]\nMove left: at (-0.110, -0.170, 0.895) pitch 0 yaw 0 roll 0  ±0 mm 0°  7 steps (line)  [45 steps left]"
+        },
+        {
+          "frame": 472,
+          "action": 472,
+          "stepEnd": 472,
+          "turn": 37,
+          "type": "tool",
+          "title": "look · to_world · state · goto",
+          "detail": "记录的工具调用；动作步 472–472",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "state",
+            "goto"
+          ],
+          "callCounts": {
+            "look": 1,
+            "to_world": 3,
+            "state": 1,
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-.07,-.125,.882),pitch=0,yaw=0,grip='close',dry_run=True)\nrobot.look('head',crop=(260,170,374,233),zoom=4)\nrobot.state()",
+          "receipt": "Move left (dry run): reachable, 14 steps by line  target (-0.070, -0.125, 0.882) pitch 0 yaw 0 roll 0\nstep 472 of 500 (28 left)"
+        },
+        {
+          "frame": 472,
+          "action": 472,
+          "stepEnd": 489,
+          "turn": 38,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 472–489",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.069,-.125,.877),pitch=0,yaw=0,roll=0,grip='close')\nrobot.look('head')",
+          "receipt": "Move left: at (-0.069, -0.125, 0.877) pitch 0 yaw 0 roll 0  ±0 mm 0°  13 steps (line)  [15 steps left]\nMove left: at (-0.069, -0.064, 0.877) pitch 0 yaw 0 roll 0  ±2 mm 0°  4 steps (line)  [11 steps left]"
+        },
+        {
+          "frame": 489,
+          "action": 489,
+          "stepEnd": 493,
+          "turn": 39,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 489–493",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-.23,-.18,.94),pitch=0,yaw=0,roll=0,grip='open')",
+          "receipt": ""
+        }
+      ],
+      "missingDepthFrames": [],
+      "recordedMissingDepthFrames": [
+        494
+      ],
+      "depthFrameHolds": [
+        {
+          "frame": 494,
+          "sourceFrame": 493
+        }
+      ]
+    },
+    {
+      "id": "tradsl_d435",
+      "key": "tradsl_d435",
+      "name": "TradSL",
+      "video": "tradsl_d435-rgb.mp4",
+      "depthVideo": "tradsl_d435-depth.mp4",
+      "depthPoster": "tradsl_d435-depth-poster.jpg",
+      "poster": "tradsl_d435-poster.jpg",
+      "duration": 20.04,
+      "frames": 501,
+      "actions": 500,
+      "turns": 56,
+      "score": 20.0,
+      "success": false,
+      "events": [
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 1,
+          "type": "tool",
+          "title": "task · state · look · find · measure",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "task",
+            "state",
+            "look",
+            "find",
+            "measure"
+          ],
+          "callCounts": {
+            "task": 1,
+            "state": 1,
+            "look": 1,
+            "find": 1,
+            "measure": 1
+          },
+          "code": "robot.measure('tube rack')\nrobot.state()\nrobot.look('all', tile=True)",
+          "receipt": "step 0 of 500 (500 left)\nMask#1 head 'tube' score 0.41  centroid (386, 268)  box (358, 246)-(413, 287)  871 px"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 2,
+          "type": "tool",
+          "title": "find · measure · look · to_world",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "find",
+            "measure",
+            "measure",
+            "measure",
+            "measure",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "find": 1,
+            "measure": 4,
+            "look": 1,
+            "to_world": 7
+          },
+          "code": "robot.measure(('head',(320,200)))\nrobot.find('head','tube')\nrobot.look('head',crop=(260,160,380,240),zoom=3)",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 3,
+          "type": "tool",
+          "title": "camera · to_world · look",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 3,
+            "to_world": 6,
+            "look": 2
+          },
+          "code": "robot.camera('head')\nrobot.camera('left_wrist')\nrobot.camera('right_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 4,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.240,0.006,.875),pitch=60,yaw=-16,grip='open',dry_run=True)\nrobot.goto('left',(-.075,-.064,.880),pitch=0,yaw=-16,dry_run=True)",
+          "receipt": "Move left (dry run): reachable, 13 steps by line  target (-0.240, 0.006, 0.875) pitch 60 yaw -16 roll 0\nMove left (dry run): reachable, 14 steps by line  target (-0.075, -0.064, 0.880) pitch 0 yaw -16 roll 0"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 13,
+          "turn": 5,
+          "type": "tool",
+          "title": "to_world · goto · look",
+          "detail": "记录的工具调用；动作步 0–13",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "to_world": 8,
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.241,.025,.785),pitch=90,yaw=-16,dry_run=True)\nrobot.goto('left',(-.241,.025,.885),pitch=90,yaw=-16,dry_run=True)\nrobot.goto('left',(-.241,.025,.885),pitch=60,yaw=-16,grip='open')",
+          "receipt": "Move left (dry run): reachable, 17 steps by line  target (-0.241, 0.025, 0.785) pitch 90 yaw -16 roll 0\nMove left (dry run): reachable, 18 steps by line  target (-0.241, 0.025, 0.885) pitch 90 yaw -16 roll 0"
+        },
+        {
+          "frame": 13,
+          "action": 13,
+          "stepEnd": 37,
+          "turn": 6,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 13–37",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.237,.020,.839),pitch=90,yaw=-19,grip='open')\nrobot.gripper('left','close')\nrobot.look('all',tile=True)",
+          "receipt": "Move left: at (-0.237, 0.020, 0.839) pitch 90 yaw -19 roll 0  ±0 mm 0°  7 steps (line)  [480 steps left]\nMove left: at (-0.237, 0.020, 0.784) pitch 90 yaw -19 roll 0  ±0 mm 0°  4 steps (line)  [476 steps left]"
+        },
+        {
+          "frame": 37,
+          "action": 37,
+          "stepEnd": 73,
+          "turn": 7,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 37–73",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-.237,-.015,.935),pitch=0,yaw=-19,gentle=True)\nrobot.goto('left',(-.070,-.039,.935),pitch=0,yaw=-19,gentle=True)\nrobot.look('head')",
+          "receipt": "Move left: at (-0.237, -0.015, 0.935) pitch 0 yaw -19 roll 0  ±0 mm 0°  27 steps (line)  [436 steps left]\nMove left: at (-0.072, -0.039, 0.935) pitch 0 yaw -19 roll 0  ±2 mm 0°  9 steps (line)  [427 steps left]"
+        },
+        {
+          "frame": 73,
+          "action": 73,
+          "stepEnd": 73,
+          "turn": 8,
+          "type": "tool",
+          "title": "look · to_world",
+          "detail": "记录的工具调用；动作步 73–73",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "look": 1,
+            "to_world": 10
+          },
+          "code": "robot.look('head',crop=(260,130,378,233),zoom=4)",
+          "receipt": ""
+        },
+        {
+          "frame": 73,
+          "action": 73,
+          "stepEnd": 77,
+          "turn": 9,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 73–77",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.066,-.044,.890),pitch=0,yaw=-19,path='line',gentle=True)\nrobot.look('head',crop=(255,145,379,239),zoom=4)\nrobot.look('right_wrist',crop=(0,180,110,320),zoom=3)",
+          "receipt": "Move left: BLOCKED — at (-0.065, -0.044, 0.895) pitch -1 yaw -19 roll 0, 5 mm / 1° from (-0.066, -0.044, 0.890) pitch 0 yaw -19 roll 0  4 steps  [423 steps left]"
+        },
+        {
+          "frame": 77,
+          "action": 77,
+          "stepEnd": 91,
+          "turn": 10,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 77–91",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.066,-.044,.925),pitch=0,yaw=-19,path='line',gentle=True)\nrobot.goto('right',(.155,-.080,.990),pitch=55,yaw=20,grip='open',dry_run=True)\nrobot.goto('right',(.155,-.080,.990),pitch=55,yaw=20,grip='open')",
+          "receipt": "Move left: at (-0.066, -0.044, 0.924) pitch 0 yaw -19 roll 0  ±1 mm 0°  3 steps (line)  [420 steps left]\nMove right (dry run): reachable, 12 steps by line  target (0.155, -0.080, 0.990) pitch 55 yaw 20 roll 0"
+        },
+        {
+          "frame": 91,
+          "action": 91,
+          "stepEnd": 97,
+          "turn": 11,
+          "type": "tool",
+          "title": "camera · goto · look · to_world",
+          "detail": "记录的工具调用；动作步 91–97",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "goto",
+            "goto",
+            "look",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "camera": 1,
+            "goto": 2,
+            "look": 2,
+            "to_world": 3
+          },
+          "code": "robot.goto('right',(.045,-.100,1.020),pitch=50,yaw=0,grip='open',dry_run=True)\nrobot.goto('right',(.045,-.100,1.020),pitch=50,yaw=0,grip='open')\nrobot.camera('right_wrist')",
+          "receipt": "Move right (dry run): reachable, 7 steps by line  target (0.045, -0.100, 1.020) pitch 50 yaw 0 roll 0\nMove right: at (0.046, -0.100, 1.020) pitch 50 yaw 0 roll 0  ±1 mm 0°  6 steps (line)  [403 steps left]"
+        },
+        {
+          "frame": 97,
+          "action": 97,
+          "stepEnd": 97,
+          "turn": 12,
+          "type": "tool",
+          "title": "camera · to_world",
+          "detail": "记录的工具调用；动作步 97–97",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "camera",
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "camera": 2,
+            "to_world": 3
+          },
+          "code": "robot.to_world('right_wrist',(160,233))\nrobot.to_world('right_wrist',(142,212))\nrobot.to_world('right_wrist',(124,162))",
+          "receipt": ""
+        },
+        {
+          "frame": 97,
+          "action": 97,
+          "stepEnd": 97,
+          "turn": 13,
+          "type": "tool",
+          "title": "look · to_world · camera",
+          "detail": "记录的工具调用；动作步 97–97",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "look",
+            "to_world",
+            "camera"
+          ],
+          "callCounts": {
+            "look": 1,
+            "to_world": 1,
+            "camera": 1
+          },
+          "code": "robot.look('right_wrist',crop=(0,85,220,280),zoom=3)",
+          "receipt": ""
+        },
+        {
+          "frame": 97,
+          "action": 97,
+          "stepEnd": 97,
+          "turn": 14,
+          "type": "tool",
+          "title": "to_world · camera",
+          "detail": "记录的工具调用；动作步 97–97",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "to_world",
+            "camera",
+            "to_world",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "camera",
+            "camera"
+          ],
+          "callCounts": {
+            "to_world": 9,
+            "camera": 10
+          },
+          "code": "",
+          "receipt": ""
+        },
+        {
+          "frame": 97,
+          "action": 97,
+          "stepEnd": 97,
+          "turn": 15,
+          "type": "tool",
+          "title": "find · look · to_world · camera",
+          "detail": "记录的工具调用；动作步 97–97",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "find",
+            "look",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera"
+          ],
+          "callCounts": {
+            "find": 1,
+            "look": 1,
+            "to_world": 7,
+            "camera": 7
+          },
+          "code": "robot.find('right_wrist','tube')\nrobot.look('right_wrist',grid=20)",
+          "receipt": "Mask#8 right_wrist 'tube' score 0.65  centroid (432, 404)  box (361, 341)-(504, 461)  6043 px\nMask#9 right_wrist 'tube' score 0.60  centroid (57, 165)  box (0, 94)-(157, 228)  9631 px"
+        },
+        {
+          "frame": 97,
+          "action": 97,
+          "stepEnd": 101,
+          "turn": 16,
+          "type": "tool",
+          "title": "camera · goto · look",
+          "detail": "记录的工具调用；动作步 97–101",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 3,
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.066,-.044,.881),pitch=0,yaw=-19,path='line',gentle=True,contact=True)\nrobot.look('right_wrist',crop=(0,90,260,300),zoom=3)\nrobot.look('head',crop=(260,145,380,242),zoom=4)",
+          "receipt": "Move left: at (-0.066, -0.043, 0.885) pitch -1 yaw -19 roll 0  ±4 mm 1°  4 steps (line)  [399 steps left]"
+        },
+        {
+          "frame": 101,
+          "action": 101,
+          "stepEnd": 104,
+          "turn": 17,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 101–104",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-.066,-.044,.855),pitch=0,yaw=-19,path='line',gentle=True,contact=True)\nrobot.look('right_wrist',crop=(0,90,300,310),zoom=2)\nrobot.state()",
+          "receipt": "Move left: at (-0.066, -0.043, 0.859) pitch -1 yaw -19 roll 0  ±4 mm 1°  3 steps (line)  [396 steps left]\nstep 104 of 500 (396 left)"
+        },
+        {
+          "frame": 104,
+          "action": 104,
+          "stepEnd": 117,
+          "turn": 18,
+          "type": "tool",
+          "title": "gripper · goto · look · state",
+          "detail": "记录的工具调用；动作步 104–117",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.gripper('left','open')\nrobot.goto('left',(-.090,-.160,.950),pitch=0,yaw=-19,path='line')\nrobot.look('all',tile=True)",
+          "receipt": "Grip left: open 1.00 (gap ~8.9 cm)  6 steps  [390 steps left]\nMove left: at (-0.090, -0.160, 0.950) pitch 0 yaw -19 roll 0  ±0 mm 0°  7 steps (line)  [383 steps left]"
+        },
+        {
+          "frame": 117,
+          "action": 117,
+          "stepEnd": 138,
+          "turn": 19,
+          "type": "tool",
+          "title": "goto · look · find",
+          "detail": "记录的工具调用；动作步 117–138",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look",
+            "look",
+            "find"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2,
+            "find": 1
+          },
+          "code": "robot.goto('left',(-.280,-.160,.950),pitch=0,yaw=0)\nrobot.goto('right',(.390,.005,.880),pitch=60,yaw=-23,grip='open')\nrobot.look('head',crop=(260,155,380,240),zoom=4)",
+          "receipt": "Move left: at (-0.280, -0.160, 0.950) pitch 0 yaw 0 roll 0  ±0 mm 0°  8 steps (line)  [375 steps left]\nMove right: at (0.390, 0.005, 0.880) pitch 60 yaw -23 roll 0  ±0 mm 0°  13 steps (line)  [362 steps left]"
+        },
+        {
+          "frame": 138,
+          "action": 138,
+          "stepEnd": 147,
+          "turn": 20,
+          "type": "tool",
+          "title": "to_world · camera · look · goto",
+          "detail": "记录的工具调用；动作步 138–147",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "look",
+            "goto",
+            "look",
+            "goto"
+          ],
+          "callCounts": {
+            "to_world": 5,
+            "camera": 5,
+            "look": 2,
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.150,-.100,1.000),pitch=50,yaw=-20,grip='open')\nrobot.goto('right',(.390,.016,.838),pitch=90,yaw=-23,grip='open',dry_run=True)\nrobot.look('right_wrist')",
+          "receipt": "Move left: at (-0.150, -0.100, 0.999) pitch 50 yaw -20 roll 0  ±1 mm 0°  9 steps (line)  [353 steps left]\nMove right (dry run): reachable, 8 steps by line  target (0.390, 0.016, 0.838) pitch 90 yaw -23 roll 0"
+        },
+        {
+          "frame": 147,
+          "action": 147,
+          "stepEnd": 147,
+          "turn": 21,
+          "type": "tool",
+          "title": "to_world · camera · state",
+          "detail": "记录的工具调用；动作步 147–147",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "state"
+          ],
+          "callCounts": {
+            "to_world": 5,
+            "camera": 9,
+            "state": 1
+          },
+          "code": "robot.state()",
+          "receipt": "step 147 of 500 (353 left)"
+        },
+        {
+          "frame": 147,
+          "action": 147,
+          "stepEnd": 154,
+          "turn": 22,
+          "type": "tool",
+          "title": "camera · goto · look",
+          "detail": "记录的工具调用；动作步 147–154",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 2,
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.390,.016,.838),pitch=90,yaw=-23,grip='open')\nrobot.look('right_wrist')\nrobot.look('head')",
+          "receipt": "Move right: at (0.390, 0.016, 0.838) pitch 90 yaw -23 roll 0  ±0 mm 0°  7 steps (line)  [346 steps left]"
+        },
+        {
+          "frame": 154,
+          "action": 154,
+          "stepEnd": 197,
+          "turn": 23,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 154–197",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.393,.016,.784),pitch=90,yaw=-23,path='line')\nrobot.gripper('right','close')\nrobot.goto('right',(.300,-.035,.935),pitch=0,yaw=-23,gentle=True)",
+          "receipt": "Move right: at (0.393, 0.016, 0.784) pitch 90 yaw -23 roll 0  ±0 mm 0°  4 steps (line)  [342 steps left]\nGrip right: closed on something ~2.8 cm wide (holding)  6 steps  [336 steps left]"
+        },
+        {
+          "frame": 197,
+          "action": 197,
+          "stepEnd": 209,
+          "turn": 24,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 197–209",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.072,-.022,.935),pitch=0,yaw=-23,gentle=True)\nrobot.look('left_wrist')\nrobot.look('head',crop=(270,130,380,235),zoom=3)",
+          "receipt": "Move right: at (0.075, -0.022, 0.935) pitch 0 yaw -23 roll 0  ±3 mm 0°  12 steps (line)  [291 steps left]"
+        },
+        {
+          "frame": 209,
+          "action": 209,
+          "stepEnd": 212,
+          "turn": 25,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 209–212",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2,
+            "state": 1
+          },
+          "code": "robot.goto('right',(.072,-.022,.890),pitch=0,yaw=-23,path='line',gentle=True,contact=True)\nrobot.look('head')\nrobot.look('left_wrist')",
+          "receipt": "Move right: at (0.072, -0.022, 0.892) pitch 0 yaw -23 roll 0  ±2 mm 0°  3 steps (line)  [288 steps left]\nstep 212 of 500 (288 left)"
+        },
+        {
+          "frame": 212,
+          "action": 212,
+          "stepEnd": 215,
+          "turn": 26,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 212–215",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.072,-.022,.855),pitch=0,yaw=-23,path='line',gentle=True,contact=True)\nrobot.look('left_wrist')\nrobot.look('head',crop=(270,150,380,240),zoom=3)",
+          "receipt": "Move right: at (0.072, -0.022, 0.858) pitch 0 yaw -23 roll 0  ±3 mm 0°  3 steps (line)  [285 steps left]"
+        },
+        {
+          "frame": 215,
+          "action": 215,
+          "stepEnd": 230,
+          "turn": 27,
+          "type": "tool",
+          "title": "gripper · goto · look · state",
+          "detail": "记录的工具调用；动作步 215–230",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 2,
+            "state": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.145,-.160,.955),pitch=0,yaw=-23,path='line')\nrobot.look('head')",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  7 steps  [278 steps left]\nMove right: at (0.145, -0.160, 0.955) pitch 0 yaw -23 roll 0  ±0 mm 0°  8 steps (line)  [270 steps left]"
+        },
+        {
+          "frame": 230,
+          "action": 230,
+          "stepEnd": 245,
+          "turn": 28,
+          "type": "tool",
+          "title": "camera · goto · look · state",
+          "detail": "记录的工具调用；动作步 230–245",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "goto",
+            "look",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "camera": 3,
+            "goto": 1,
+            "look": 2,
+            "state": 1
+          },
+          "code": "robot.goto('right',(.120,-.157,.870),pitch=90,yaw=54,grip='open')\nrobot.look('right_wrist')\nrobot.look('head',crop=(268,166,375,235),zoom=5)",
+          "receipt": "Move right: at (0.120, -0.157, 0.870) pitch 90 yaw 54 roll 0  ±0 mm 0°  15 steps (line)  [255 steps left]\nstep 245 of 500 (255 left)"
+        },
+        {
+          "frame": 245,
+          "action": 245,
+          "stepEnd": 287,
+          "turn": 29,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 245–287",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.116,-.153,.784),pitch=90,yaw=54,path='line')\nrobot.gripper('right','close')\nrobot.goto('right',(.120,-.125,.950),pitch=0,yaw=54,gentle=True)",
+          "receipt": "Move right: at (0.116, -0.153, 0.786) pitch 90 yaw 54 roll 0  ±3 mm 0°  5 steps (line)  [250 steps left]\nGrip right: closed on something ~2.8 cm wide (holding)  6 steps  [244 steps left]"
+        },
+        {
+          "frame": 287,
+          "action": 287,
+          "stepEnd": 306,
+          "turn": 30,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 287–306",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 3
+          },
+          "code": "robot.goto('right',(.003,-.035,.940),pitch=0,yaw=54,gentle=True)\nrobot.goto('right',(.003,-.035,.890),pitch=0,yaw=54,path='line',gentle=True,contact=True)\nrobot.look('left_wrist')",
+          "receipt": "Move right: at (0.005, -0.036, 0.940) pitch 0 yaw 54 roll 0  ±3 mm 0°  8 steps (line)  [205 steps left]\nMove right: BLOCKED — at (0.003, -0.034, 0.919) pitch -4 yaw 54 roll -2, 29 mm / 4° from (0.003, -0.035, 0.890) pitch 0 yaw 54 roll 0  11 steps  [194 steps left]"
+        },
+        {
+          "frame": 306,
+          "action": 306,
+          "stepEnd": 309,
+          "turn": 31,
+          "type": "tool",
+          "title": "goto · look · camera · state",
+          "detail": "记录的工具调用；动作步 306–309",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look",
+            "camera",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2,
+            "camera": 1,
+            "state": 1
+          },
+          "code": "robot.goto('right',(.003,-.035,.956),pitch=0,yaw=54,path='line',gentle=True)\nrobot.look('left_wrist')\nrobot.look('right_wrist')",
+          "receipt": "Move right: at (0.003, -0.035, 0.955) pitch 0 yaw 54 roll 0  ±1 mm 0°  3 steps (line)  [191 steps left]\nstep 309 of 500 (191 left)"
+        },
+        {
+          "frame": 309,
+          "action": 309,
+          "stepEnd": 309,
+          "turn": 32,
+          "type": "tool",
+          "title": "look · to_world",
+          "detail": "记录的工具调用；动作步 309–309",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "look",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "look": 2,
+            "to_world": 4
+          },
+          "code": "robot.look('head',crop=(275,120,375,225),zoom=4)\nrobot.look('left_wrist',crop=(450,0,620,165),zoom=3)",
+          "receipt": ""
+        },
+        {
+          "frame": 309,
+          "action": 309,
+          "stepEnd": 310,
+          "turn": 33,
+          "type": "tool",
+          "title": "camera · goto · look",
+          "detail": "记录的工具调用；动作步 309–310",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 5,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(-.009,-.046,.956),pitch=0,yaw=54,path='line',gentle=True)\nrobot.look('head',crop=(275,125,373,230),zoom=4)",
+          "receipt": "Move right: at (-0.008, -0.045, 0.956) pitch 0 yaw 54 roll 0  ±2 mm 0°  1 steps (line)  [190 steps left]"
+        },
+        {
+          "frame": 310,
+          "action": 310,
+          "stepEnd": 337,
+          "turn": 34,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 310–337",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 3
+          },
+          "code": "robot.goto('right',(.007,-.031,.960),pitch=0,yaw=0,gentle=True)\nrobot.goto('right',(.007,-.031,.885),pitch=0,yaw=0,path='line',gentle=True,contact=True)\nrobot.look('head')",
+          "receipt": "Move right: at (0.007, -0.031, 0.960) pitch 0 yaw 0 roll 0  ±0 mm 0°  15 steps (line)  [175 steps left]\nMove right: BLOCKED — at (-0.000, -0.036, 0.917) pitch -3 yaw 1 roll 4, 34 mm / 5° from (0.007, -0.031, 0.885) pitch 0 yaw 0 roll 0  12 steps  [163 steps left]"
+        },
+        {
+          "frame": 337,
+          "action": 337,
+          "stepEnd": 340,
+          "turn": 35,
+          "type": "tool",
+          "title": "goto · look · camera · state",
+          "detail": "记录的工具调用；动作步 337–340",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look",
+            "camera",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2,
+            "camera": 1,
+            "state": 1
+          },
+          "code": "robot.goto('right',(.007,-.031,.950),pitch=0,yaw=0,path='line',gentle=True)\nrobot.look('left_wrist')\nrobot.look('head',crop=(290,120,350,220),zoom=4)",
+          "receipt": "Move right: at (0.007, -0.031, 0.949) pitch 0 yaw 0 roll 0  ±1 mm 0°  3 steps (line)  [160 steps left]\nstep 340 of 500 (160 left)"
+        },
+        {
+          "frame": 340,
+          "action": 340,
+          "stepEnd": 344,
+          "turn": 36,
+          "type": "tool",
+          "title": "camera · goto · look",
+          "detail": "记录的工具调用；动作步 340–344",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 4,
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.011,-.023,.898),pitch=0,yaw=0,path='line',gentle=True,contact=True)\nrobot.look('left_wrist')\nrobot.look('head')",
+          "receipt": "Move right: at (0.011, -0.023, 0.901) pitch 0 yaw 0 roll 0  ±3 mm 0°  4 steps (line)  [156 steps left]"
+        },
+        {
+          "frame": 344,
+          "action": 344,
+          "stepEnd": 348,
+          "turn": 37,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 344–348",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.011,-.023,.856),pitch=0,yaw=0,path='line',gentle=True,contact=True)\nrobot.look('left_wrist')\nrobot.look('head')",
+          "receipt": "Move right: BLOCKED — at (0.010, -0.022, 0.862) pitch -1 yaw 0 roll 1, 6 mm / 1° from (0.011, -0.023, 0.856) pitch 0 yaw 0 roll 0  4 steps  [152 steps left]"
+        },
+        {
+          "frame": 348,
+          "action": 348,
+          "stepEnd": 371,
+          "turn": 38,
+          "type": "tool",
+          "title": "gripper · goto · look · state",
+          "detail": "记录的工具调用；动作步 348–371",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 2,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.220,-.170,.970),pitch=0,yaw=0,path='line')\nrobot.goto('left',(-.110,-.135,1.065),pitch=50,yaw=0,grip='open')",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  6 steps  [146 steps left]\nMove right: at (0.220, -0.170, 0.969) pitch 0 yaw 0 roll 0  ±1 mm 0°  11 steps (line)  [135 steps left]"
+        },
+        {
+          "frame": 371,
+          "action": 371,
+          "stepEnd": 371,
+          "turn": 39,
+          "type": "tool",
+          "title": "to_world · camera · look · task",
+          "detail": "记录的工具调用；动作步 371–371",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "camera",
+            "camera",
+            "camera",
+            "look",
+            "task"
+          ],
+          "callCounts": {
+            "to_world": 3,
+            "camera": 6,
+            "look": 1,
+            "task": 1
+          },
+          "code": "robot.look('left_wrist',crop=(310,10,640,275),zoom=2)",
+          "receipt": ""
+        },
+        {
+          "frame": 371,
+          "action": 371,
+          "stepEnd": 371,
+          "turn": 40,
+          "type": "tool",
+          "title": "goto · camera · look",
+          "detail": "记录的工具调用；动作步 371–371",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "camera",
+            "camera",
+            "camera",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "camera": 3,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.015,.087,.795),pitch=60,yaw=-72,dry_run=True)\nrobot.goto('left',(.015,.087,.795),pitch=60,yaw=-72,dry_run=True)\nrobot.goto('right',(.015,.070,.885),pitch=60,yaw=-72,dry_run=True)",
+          "receipt": "Move right (dry run): NOT reachable  target (0.015, 0.087, 0.795) pitch 60 yaw -72 roll 0\nMove left (dry run): reachable, 15 steps by line  target (0.015, 0.087, 0.795) pitch 60 yaw -72 roll 0"
+        },
+        {
+          "frame": 371,
+          "action": 371,
+          "stepEnd": 384,
+          "turn": 41,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 371–384",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2
+          },
+          "code": "robot.goto('left',(.005,.083,.865),pitch=60,yaw=-72,grip='open',dry_run=True)\nrobot.goto('left',(.005,.083,.865),pitch=60,yaw=-72,grip='open')\nrobot.look('left_wrist')",
+          "receipt": "Move left (dry run): reachable, 14 steps by line  target (0.005, 0.083, 0.865) pitch 60 yaw -72 roll 0\nMove left: short of target — at (0.003, 0.077, 0.862) pitch 55 yaw -64 roll 7, 8 mm / 7° from (0.005, 0.083, 0.865) pitch 60 yaw -72 roll 0  13 steps  [116 steps left]"
+        },
+        {
+          "frame": 384,
+          "action": 384,
+          "stepEnd": 384,
+          "turn": 42,
+          "type": "tool",
+          "title": "to_world · camera · state",
+          "detail": "记录的工具调用；动作步 384–384",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "state"
+          ],
+          "callCounts": {
+            "to_world": 6,
+            "camera": 3,
+            "state": 1
+          },
+          "code": "robot.state()",
+          "receipt": "step 384 of 500 (116 left)"
+        },
+        {
+          "frame": 384,
+          "action": 384,
+          "stepEnd": 391,
+          "turn": 43,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 384–391",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.060,.133,.835),pitch=45,yaw=-48,grip='open',dry_run=True)\nrobot.goto('left',(-.060,.133,.835),pitch=45,yaw=-48,grip='open')\nrobot.look('head')",
+          "receipt": "Move left (dry run): reachable, 8 steps by line  target (-0.060, 0.133, 0.835) pitch 45 yaw -48 roll 0\nMove left: at (-0.059, 0.133, 0.835) pitch 45 yaw -48 roll 0  ±1 mm 0°  7 steps (line)  [109 steps left]"
+        },
+        {
+          "frame": 391,
+          "action": 391,
+          "stepEnd": 409,
+          "turn": 44,
+          "type": "tool",
+          "title": "camera · goto · gripper · look",
+          "detail": "记录的工具调用；动作步 391–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "goto",
+            "gripper",
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 1,
+            "goto": 2,
+            "gripper": 1,
+            "look": 2
+          },
+          "code": "robot.gripper('left','close')\nrobot.look('head')\nrobot.look('left_wrist')",
+          "receipt": "Move left: at (-0.056, 0.161, 0.784) pitch 45 yaw -48 roll 0  ±1 mm 0°  4 steps (line)  [105 steps left]\nGrip left: closed on something ~2.9 cm wide (holding)  7 steps  [98 steps left]"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 409,
+          "turn": 45,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 409–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.050,.060,.945),pitch=-45,yaw=-48,gentle=True,dry_run=True)\nrobot.goto('left',(-.050,.060,.945),pitch=-45,yaw=-48,gentle=True)",
+          "receipt": "Move left (dry run): NOT reachable  target (-0.050, 0.060, 0.945) pitch -45 yaw -48 roll 0"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 409,
+          "turn": 46,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 409–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.050,-.080,.940),pitch=-45,yaw=-48,gentle=True,dry_run=True)\nrobot.goto('left',(-.050,-.080,.940),pitch=-45,yaw=-48,gentle=True)",
+          "receipt": "Move left (dry run): NOT reachable  target (-0.050, -0.080, 0.940) pitch -45 yaw -48 roll 0"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 409,
+          "turn": 47,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 409–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 5,
+            "look": 1
+          },
+          "code": "robot.look('head',crop=(267,166,375,230),zoom=5)",
+          "receipt": "Move left (dry run): NOT reachable  target (-0.100, -0.050, 0.950) pitch -45 yaw 0 roll 0\nMove left (dry run): NOT reachable  target (-0.050, -0.030, 0.900) pitch -40 yaw 0 roll 0"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 409,
+          "turn": 48,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 409–409",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 7
+          },
+          "code": "",
+          "receipt": "Move left (dry run): reachable, 16 steps by line  target (-0.020, -0.030, 1.080) pitch -45 yaw -48 roll 0\nMove left (dry run): reachable, 15 steps by line  target (-0.020, -0.030, 1.160) pitch -45 yaw -48 roll 0"
+        },
+        {
+          "frame": 409,
+          "action": 409,
+          "stepEnd": 429,
+          "turn": 49,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 409–429",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 6
+          },
+          "code": "robot.goto('left',(-.11,-.17,.800),pitch=45,yaw=-48,dry_run=True)\nrobot.goto('left',(-.11,-.17,.800),pitch=45,yaw=-48,gentle=True)",
+          "receipt": "Move left (dry run): reachable, 16 steps by line  target (-0.030, 0.006, 0.890) pitch -25 yaw -48 roll 0\nMove left (dry run): NOT reachable  target (-0.030, 0.006, 0.850) pitch -25 yaw -48 roll 0"
+        },
+        {
+          "frame": 429,
+          "action": 429,
+          "stepEnd": 429,
+          "turn": 50,
+          "type": "tool",
+          "title": "look · state",
+          "detail": "记录的工具调用；动作步 429–429",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "look",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "look": 2,
+            "state": 1
+          },
+          "code": "robot.look('head')\nrobot.look('left_wrist')\nrobot.state()",
+          "receipt": "step 429 of 500 (71 left)"
+        },
+        {
+          "frame": 429,
+          "action": 429,
+          "stepEnd": 431,
+          "turn": 51,
+          "type": "tool",
+          "title": "gripper",
+          "detail": "记录的工具调用；动作步 429–431",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper"
+          ],
+          "callCounts": {
+            "gripper": 1
+          },
+          "code": "robot.gripper('left','open')",
+          "receipt": ""
+        },
+        {
+          "frame": 431,
+          "action": 431,
+          "stepEnd": 431,
+          "turn": 52,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 431–431",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-.200,-.210,.950),pitch=0,yaw=0,grip='open')",
+          "receipt": ""
+        },
+        {
+          "frame": 431,
+          "action": 431,
+          "stepEnd": 444,
+          "turn": 53,
+          "type": "tool",
+          "title": "home · look · state",
+          "detail": "记录的工具调用；动作步 431–444",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "home",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "home": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.home('left')\nrobot.look('head')\nrobot.state()",
+          "receipt": "Home: left home  11 steps  [56 steps left]\nstep 444 of 500 (56 left)"
+        },
+        {
+          "frame": 444,
+          "action": 444,
+          "stepEnd": 457,
+          "turn": 54,
+          "type": "tool",
+          "title": "to_world · camera · goto · look",
+          "detail": "记录的工具调用；动作步 444–457",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "to_world",
+            "camera",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "to_world": 3,
+            "camera": 3,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.051,-.195,.812),pitch=90,yaw=-90,grip='open')\nrobot.look('right_wrist')",
+          "receipt": "Move right: at (0.051, -0.195, 0.813) pitch 90 yaw 90 roll 0  ±1 mm 0°  13 steps (line)  [43 steps left]"
+        },
+        {
+          "frame": 457,
+          "action": 457,
+          "stepEnd": 473,
+          "turn": 55,
+          "type": "tool",
+          "title": "goto · gripper",
+          "detail": "记录的工具调用；动作步 457–473",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1
+          },
+          "code": "robot.goto('right',(.051,-.195,.783),pitch=90,yaw=90,path='line')\nrobot.gripper('right','close')\nrobot.goto('right',(.002,-.030,.900),pitch=0,yaw=0,roll=180,dry_run=True)",
+          "receipt": "Move right: at (0.051, -0.195, 0.785) pitch 90 yaw 90 roll 0  ±2 mm 0°  2 steps (line)  [41 steps left]\nGrip right: closed on something ~3.0 cm wide (holding)  6 steps  [35 steps left]"
+        },
+        {
+          "frame": 473,
+          "action": 473,
+          "stepEnd": 499,
+          "turn": 56,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 473–499",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 1
+          },
+          "code": "robot.goto('right',(.002,-.032,.900),pitch=0,yaw=0,roll=180,gentle=True)",
+          "receipt": ""
+        }
+      ],
+      "missingDepthFrames": [],
+      "recordedMissingDepthFrames": [
+        432,
+        433,
+        500
+      ],
+      "depthFrameHolds": [
+        {
+          "frame": 432,
+          "sourceFrame": 431
+        },
+        {
+          "frame": 433,
+          "sourceFrame": 431
+        },
+        {
+          "frame": 500,
+          "sourceFrame": 499
+        }
+      ]
+    },
+    {
+      "id": "dav2_metric",
+      "key": "dav2_metric",
+      "name": "DAv2 Metric",
+      "video": "dav2_metric-rgb.mp4",
+      "depthVideo": "dav2_metric-depth.mp4",
+      "depthPoster": "dav2_metric-depth-poster.jpg",
+      "poster": "dav2_metric-poster.jpg",
+      "duration": 20.04,
+      "frames": 501,
+      "actions": 500,
+      "turns": 49,
+      "score": 0.0,
+      "success": false,
+      "events": [
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 1,
+          "type": "tool",
+          "title": "task · state · look · find · measure",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "task",
+            "state",
+            "look",
+            "find",
+            "measure"
+          ],
+          "callCounts": {
+            "task": 1,
+            "state": 1,
+            "look": 1,
+            "find": 1,
+            "measure": 1
+          },
+          "code": "robot.measure('tube rack')\nrobot.state()\nrobot.look('head', grid=True)",
+          "receipt": "step 0 of 500 (500 left)\nMask#1 head 'tube' score 0.41  centroid (386, 268)  box (358, 246)-(413, 287)  871 px"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 2,
+          "type": "tool",
+          "title": "measure · look · to_world",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "measure",
+            "measure",
+            "measure",
+            "measure",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "measure": 4,
+            "look": 1,
+            "to_world": 9
+          },
+          "code": "robot.measure(('head',(214,198)))\nrobot.measure(('head',(490,198)))\nrobot.measure(('head',(387,268)))",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 3,
+          "type": "tool",
+          "title": "camera · to_world · look",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "camera",
+            "camera",
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 3,
+            "to_world": 14,
+            "look": 1
+          },
+          "code": "robot.camera('head')\nrobot.camera('left_wrist')\nrobot.camera('right_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 4,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-.243,.004,.867),pitch=90,yaw=-12,grip='open',dry_run=True)\nrobot.goto('left',(-.055,.02,.91),pitch=0,yaw=-12,dry_run=True)",
+          "receipt": "Move left (dry run): reachable, 17 steps by line  target (-0.243, 0.004, 0.867) pitch 90 yaw -12 roll 0\nMove left (dry run): reachable, 16 steps by line  target (-0.055, 0.020, 0.910) pitch 0 yaw -12 roll 0"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 17,
+          "turn": 5,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 0–17",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-.244,.007,.875),pitch=90,yaw=-16,grip='open')\nrobot.look(['head','left_wrist'],grid=True)\nrobot.state()",
+          "receipt": "Move left: at (-0.244, 0.006, 0.874) pitch 90 yaw -16 roll 0  ±1 mm 0°  17 steps (line)  [483 steps left]\nstep 17 of 500 (483 left)"
+        },
+        {
+          "frame": 17,
+          "action": 17,
+          "stepEnd": 37,
+          "turn": 6,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 17–37",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.246,.005,.784),pitch=90,yaw=-16,path='line')\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move left: at (-0.246, 0.005, 0.784) pitch 90 yaw -16 roll 0  ±0 mm 0°  6 steps (line)  [477 steps left]\nGrip left: closed on something ~2.8 cm wide (holding)  6 steps  [471 steps left]"
+        },
+        {
+          "frame": 37,
+          "action": 37,
+          "stepEnd": 63,
+          "turn": 7,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 37–63",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.246,-.018,.942),pitch=0,yaw=-16,gentle=True)\nrobot.goto('left',(-.068,-.016,.935),pitch=0,yaw=-16,dry_run=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move left: at (-0.246, -0.018, 0.942) pitch 0 yaw -16 roll 0  ±0 mm 0°  26 steps (line)  [437 steps left]\nMove left (dry run): reachable, 9 steps by line  target (-0.068, -0.016, 0.935) pitch 0 yaw -16 roll 0"
+        },
+        {
+          "frame": 63,
+          "action": 63,
+          "stepEnd": 72,
+          "turn": 8,
+          "type": "tool",
+          "title": "image · goto · look",
+          "detail": "记录的工具调用；动作步 63–72",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "image",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "image": 1,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-.074,-.013,.925),pitch=0,yaw=-16,gentle=True)\nrobot.image('head')\nrobot.look('head',crop=(255,120,382,235),zoom=3)",
+          "receipt": "Move left: at (-0.076, -0.013, 0.925) pitch 0 yaw -16 roll 0  ±2 mm 0°  9 steps (line)  [428 steps left]"
+        },
+        {
+          "frame": 72,
+          "action": 72,
+          "stepEnd": 76,
+          "turn": 9,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 72–76",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.look(['head','right_wrist'],grid=True)\nrobot.state()",
+          "receipt": "Move left: at (-0.075, -0.012, 0.873) pitch 0 yaw -16 roll 0  ±1 mm 0°  4 steps (line)  [424 steps left]\nstep 76 of 500 (424 left)"
+        },
+        {
+          "frame": 76,
+          "action": 76,
+          "stepEnd": 86,
+          "turn": 10,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 76–86",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.look('head',crop=(255,145,375,237),zoom=4)\nrobot.look('left_wrist',grid=True)",
+          "receipt": "Move left: BLOCKED — at (-0.073, -0.011, 0.857) pitch -2 yaw -16 roll -1, 13 mm / 2° from (-0.075, -0.012, 0.845) pitch 0 yaw -16 roll 0  10 steps  [414 steps left]"
+        },
+        {
+          "frame": 86,
+          "action": 86,
+          "stepEnd": 98,
+          "turn": 11,
+          "type": "tool",
+          "title": "goto · look · camera",
+          "detail": "记录的工具调用；动作步 86–98",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look",
+            "camera",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 2,
+            "camera": 1
+          },
+          "code": "robot.goto('left',(-.075,-.012,.895),pitch=0,yaw=-16,gentle=True)\nrobot.goto('left',(-.075,-.012,.895),pitch=14,yaw=-16,gentle=True)\nrobot.goto('left',(-.075,-.012,.845),pitch=14,yaw=-16,path='line',gentle=True,contact=True)",
+          "receipt": "Move left: at (-0.075, -0.012, 0.894) pitch 0 yaw -16 roll 0  ±1 mm 0°  3 steps (line)  [411 steps left]\nMove left: at (-0.075, -0.012, 0.895) pitch 14 yaw -16 roll 0  ±0 mm 0°  5 steps (line)  [406 steps left]"
+        },
+        {
+          "frame": 98,
+          "action": 98,
+          "stepEnd": 100,
+          "turn": 12,
+          "type": "tool",
+          "title": "state · look · gripper",
+          "detail": "记录的工具调用；动作步 98–100",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "state",
+            "look",
+            "gripper"
+          ],
+          "callCounts": {
+            "state": 1,
+            "look": 1,
+            "gripper": 1
+          },
+          "code": "robot.gripper('left','close')\nrobot.state()\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Grip left: closed on something ~2.7 cm wide (holding)  2 steps  [400 steps left]\nstep 98 of 500 (402 left)"
+        },
+        {
+          "frame": 100,
+          "action": 100,
+          "stepEnd": 110,
+          "turn": 13,
+          "type": "tool",
+          "title": "camera · look · goto",
+          "detail": "记录的工具调用；动作步 100–110",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "look",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "camera": 1,
+            "look": 3,
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-.075,-.012,.828),pitch=14,yaw=-16,path='line',contact=True,gentle=True)\nrobot.camera('left_wrist')\nrobot.look('left_wrist',crop=(210,170,640,470),zoom=1.5)",
+          "receipt": "Move left: BLOCKED — at (-0.072, -0.010, 0.843) pitch 12 yaw -16 roll -1, 15 mm / 2° from (-0.075, -0.012, 0.828) pitch 14 yaw -16 roll 0  10 steps  [390 steps left]"
+        },
+        {
+          "frame": 110,
+          "action": 110,
+          "stepEnd": 110,
+          "turn": 14,
+          "type": "tool",
+          "title": "camera",
+          "detail": "记录的工具调用；动作步 110–110",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "camera"
+          ],
+          "callCounts": {
+            "camera": 1
+          },
+          "code": "robot.camera('left_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 110,
+          "action": 110,
+          "stepEnd": 114,
+          "turn": 15,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 110–114",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.075,-.012,.9),pitch=14,yaw=-16,gentle=True)\nrobot.look('head',crop=(255,120,375,235),zoom=4)\nrobot.look('left_wrist')",
+          "receipt": "Move left: at (-0.075, -0.012, 0.899) pitch 14 yaw -16 roll 0  ±1 mm 0°  4 steps (line)  [386 steps left]"
+        },
+        {
+          "frame": 114,
+          "action": 114,
+          "stepEnd": 134,
+          "turn": 16,
+          "type": "tool",
+          "title": "goto · gripper · look · state",
+          "detail": "记录的工具调用；动作步 114–134",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "gripper",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-.071,.002,.9),pitch=14,yaw=-16,gentle=True)\nrobot.goto('left',(-.071,.002,.845),pitch=14,yaw=-16,path='line',contact=True,gentle=True)\nrobot.gripper('left','open')",
+          "receipt": "Move left: at (-0.071, 0.000, 0.900) pitch 14 yaw -16 roll 0  ±2 mm 0°  1 steps (line)  [385 steps left]\nMove left: at (-0.071, 0.002, 0.846) pitch 14 yaw -16 roll 0  ±1 mm 0°  4 steps (line)  [381 steps left]"
+        },
+        {
+          "frame": 134,
+          "action": 134,
+          "stepEnd": 134,
+          "turn": 17,
+          "type": "tool",
+          "title": "look · state · find",
+          "detail": "记录的工具调用；动作步 134–134",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "look",
+            "look",
+            "state",
+            "find"
+          ],
+          "callCounts": {
+            "look": 2,
+            "state": 1,
+            "find": 1
+          },
+          "code": "robot.look('head',grid=True)\nrobot.look('left_wrist',grid=True)\nrobot.state()",
+          "receipt": "step 134 of 500 (366 left)\nMask#10 head 'tube' score 0.27  centroid (386, 268)  box (358, 246)-(413, 287)  866 px"
+        },
+        {
+          "frame": 134,
+          "action": 134,
+          "stepEnd": 153,
+          "turn": 18,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 134–153",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.399,.023,.875),pitch=90,yaw=-18,grip='open',dry_run=True)\nrobot.goto('right',(.067,.012,.86),pitch=14,yaw=-18,dry_run=True)\nrobot.goto('right',(.399,.023,.875),pitch=90,yaw=-18,grip='open')",
+          "receipt": "Move right (dry run): reachable, 19 steps by line  target (0.399, 0.023, 0.875) pitch 90 yaw -18 roll 0\nMove right (dry run): reachable, 16 steps by line  target (0.067, 0.012, 0.860) pitch 14 yaw -18 roll 0"
+        },
+        {
+          "frame": 153,
+          "action": 153,
+          "stepEnd": 195,
+          "turn": 19,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 153–195",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.401,.031,.790),pitch=90,yaw=-18,path='line')\nrobot.look(['head','right_wrist'],grid=True)",
+          "receipt": "Move right: at (0.401, 0.031, 0.793) pitch 90 yaw -18 roll 0  ±3 mm 0°  5 steps (line)  [342 steps left]\nGrip right: closed on something ~2.9 cm wide (holding)  6 steps  [336 steps left]"
+        },
+        {
+          "frame": 195,
+          "action": 195,
+          "stepEnd": 213,
+          "turn": 20,
+          "type": "tool",
+          "title": "goto · look · camera",
+          "detail": "记录的工具调用；动作步 195–213",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "camera",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 2,
+            "camera": 1
+          },
+          "code": "robot.look('head',crop=(270,120,385,235),zoom=4)\nrobot.camera('right_wrist')\nrobot.look('right_wrist')",
+          "receipt": "Move right: at (0.068, 0.013, 0.940) pitch 14 yaw -18 roll 0  ±1 mm 0°  18 steps (line)  [287 steps left]"
+        },
+        {
+          "frame": 213,
+          "action": 213,
+          "stepEnd": 218,
+          "turn": 21,
+          "type": "tool",
+          "title": "goto · look · camera",
+          "detail": "记录的工具调用；动作步 213–218",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "camera",
+            "camera"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "camera": 2
+          },
+          "code": "robot.look(['head','left_wrist','right_wrist'],grid=True)\nrobot.camera('left_wrist')\nrobot.camera('right_wrist')",
+          "receipt": "Move right: BLOCKED — at (0.067, 0.013, 0.883) pitch 14 yaw -18 roll 1, 5 mm / 1° from (0.067, 0.012, 0.878) pitch 14 yaw -18 roll 0  5 steps  [282 steps left]"
+        },
+        {
+          "frame": 218,
+          "action": 218,
+          "stepEnd": 225,
+          "turn": 22,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 218–225",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.067,.012,.91),pitch=14,yaw=-18,gentle=True)\nrobot.goto('right',(.071,.029,.91),pitch=14,yaw=-18,gentle=True)\nrobot.goto('right',(.071,.029,.856),pitch=14,yaw=-18,gentle=True,contact=True)",
+          "receipt": "Move right: at (0.067, 0.012, 0.908) pitch 14 yaw -18 roll 0  ±2 mm 0°  2 steps (line)  [280 steps left]\nMove right: at (0.071, 0.027, 0.909) pitch 14 yaw -18 roll 0  ±2 mm 0°  1 steps (line)  [279 steps left]"
+        },
+        {
+          "frame": 225,
+          "action": 225,
+          "stepEnd": 243,
+          "turn": 23,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 225–243",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.067,.012,.94),pitch=14,yaw=-18,gentle=True)\nrobot.goto('right',(.067,.012,.94),pitch=-10,yaw=-18,gentle=True)\nrobot.look(['head','left_wrist','right_wrist'],grid=True)",
+          "receipt": "Move right: at (0.067, 0.013, 0.937) pitch 14 yaw -18 roll 0  ±3 mm 0°  5 steps (line)  [270 steps left]\nMove right: at (0.067, 0.012, 0.940) pitch -10 yaw -18 roll 0  ±0 mm 0°  13 steps (line)  [257 steps left]"
+        },
+        {
+          "frame": 243,
+          "action": 243,
+          "stepEnd": 256,
+          "turn": 24,
+          "type": "tool",
+          "title": "goto · camera · look",
+          "detail": "记录的工具调用；动作步 243–256",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "camera",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "camera": 1,
+            "look": 2
+          },
+          "code": "robot.goto('left',(-.23,-.17,.95),pitch=0,yaw=-45)\nrobot.goto('right',(.067,.012,.875),pitch=-10,yaw=-18,gentle=True,contact=True)\nrobot.camera('left_wrist')",
+          "receipt": "Move left: at (-0.230, -0.170, 0.950) pitch 0 yaw -45 roll 0  ±0 mm 0°  9 steps (line)  [248 steps left]\nMove right: at (0.067, 0.012, 0.877) pitch -10 yaw -18 roll 0  ±2 mm 0°  4 steps (line)  [244 steps left]"
+        },
+        {
+          "frame": 256,
+          "action": 256,
+          "stepEnd": 266,
+          "turn": 25,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 256–266",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.067,.012,.85),pitch=-10,yaw=-18,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: BLOCKED — at (0.067, 0.012, 0.871) pitch -11 yaw -19 roll 3, 21 mm / 3° from (0.067, 0.012, 0.850) pitch -10 yaw -18 roll 0  10 steps  [234 steps left]"
+        },
+        {
+          "frame": 266,
+          "action": 266,
+          "stepEnd": 272,
+          "turn": 26,
+          "type": "tool",
+          "title": "image · goto",
+          "detail": "记录的工具调用；动作步 266–272",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "image",
+            "image",
+            "goto",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "image": 2,
+            "goto": 3
+          },
+          "code": "robot.goto('right',(.067,.012,.915),pitch=-10,yaw=-18,gentle=True)\nrobot.goto('right',(.067,.012,.915),pitch=-22,yaw=-18,gentle=True)\nrobot.goto('right',(.067,.012,.85),pitch=-22,yaw=-18,gentle=True,contact=True)",
+          "receipt": "Move right: at (0.067, 0.012, 0.913) pitch -10 yaw -18 roll 0  ±2 mm 0°  3 steps (line)  [231 steps left]\nMove right: short of target — at (0.067, 0.014, 0.917) pitch -17 yaw -16 roll -1, 3 mm / 5° from (0.067, 0.012, 0.915) pitch -22 yaw -18 roll 0  3 steps  [228 steps left]"
+        },
+        {
+          "frame": 272,
+          "action": 272,
+          "stepEnd": 272,
+          "turn": 27,
+          "type": "tool",
+          "title": "look · state · goto",
+          "detail": "记录的工具调用；动作步 272–272",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "state",
+            "goto"
+          ],
+          "callCounts": {
+            "look": 1,
+            "state": 1,
+            "goto": 1
+          },
+          "code": "robot.goto('right',(.08,-.02,.88),pitch=-17,yaw=-18,dry_run=True)\nrobot.look(['head','left_wrist'],grid=True)\nrobot.state()",
+          "receipt": "Move right (dry run): reachable, 5 steps by line  target (0.080, -0.020, 0.880) pitch -17 yaw -18 roll 0\nstep 272 of 500 (228 left)"
+        },
+        {
+          "frame": 272,
+          "action": 272,
+          "stepEnd": 287,
+          "turn": 28,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 272–287",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.078,.026,.92),pitch=-10,yaw=-18,gentle=True)\nrobot.goto('right',(.078,.026,.844),pitch=-10,yaw=-18,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.078, 0.026, 0.920) pitch -10 yaw -18 roll 0  ±0 mm 0°  3 steps (line)  [225 steps left]\nMove right: BLOCKED — at (0.078, 0.026, 0.874) pitch -12 yaw -19 roll 4, 30 mm / 4° from (0.078, 0.026, 0.844) pitch -10 yaw -18 roll 0  12 steps  [213 steps left]"
+        },
+        {
+          "frame": 287,
+          "action": 287,
+          "stepEnd": 287,
+          "turn": 29,
+          "type": "tool",
+          "title": "image",
+          "detail": "记录的工具调用；动作步 287–287",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "image",
+            "image"
+          ],
+          "callCounts": {
+            "image": 2
+          },
+          "code": "robot.image('head')\nrobot.image('left_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 287,
+          "action": 287,
+          "stepEnd": 291,
+          "turn": 30,
+          "type": "tool",
+          "title": "goto",
+          "detail": "记录的工具调用；动作步 287–291",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 5
+          },
+          "code": "robot.goto('right',(.074,.021,.925),pitch=-10,yaw=-18,gentle=True)",
+          "receipt": "Move right (dry run): NOT reachable  target (0.067, 0.012, 0.850) pitch -23 yaw 15 roll 0\nMove right (dry run): NOT reachable  target (0.067, 0.012, 0.850) pitch -23 yaw 30 roll 0"
+        },
+        {
+          "frame": 291,
+          "action": 291,
+          "stepEnd": 303,
+          "turn": 31,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 291–303",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.074,.021,.845),pitch=-10,yaw=-18,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: BLOCKED — at (0.074, 0.021, 0.873) pitch -12 yaw -19 roll 3, 28 mm / 4° from (0.074, 0.021, 0.845) pitch -10 yaw -18 roll 0  12 steps  [197 steps left]"
+        },
+        {
+          "frame": 303,
+          "action": 303,
+          "stepEnd": 318,
+          "turn": 32,
+          "type": "tool",
+          "title": "gripper · goto · look",
+          "detail": "记录的工具调用；动作步 303–318",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.2,-.08,.98),pitch=0,yaw=0)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  6 steps  [191 steps left]\nMove right: at (0.200, -0.080, 0.980) pitch 0 yaw 0 roll 0  ±0 mm 0°  9 steps (line)  [182 steps left]"
+        },
+        {
+          "frame": 318,
+          "action": 318,
+          "stepEnd": 336,
+          "turn": 33,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 318–336",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "gripper",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.093,.032,.965),pitch=0,yaw=0,grip='open',dry_run=True)\nrobot.goto('right',(.093,.032,.965),pitch=0,yaw=0,grip='open')\nrobot.goto('right',(.093,.032,.89),pitch=0,yaw=0,path='line')",
+          "receipt": "Move right (dry run): reachable, 8 steps by line  target (0.093, 0.032, 0.965) pitch 0 yaw 0 roll 0\nMove right: at (0.093, 0.032, 0.965) pitch 0 yaw 0 roll 0  ±1 mm 0°  7 steps (line)  [175 steps left]"
+        },
+        {
+          "frame": 336,
+          "action": 336,
+          "stepEnd": 339,
+          "turn": 34,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 336–339",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 4,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.093,.032,.94),pitch=0,yaw=0,gentle=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.093, 0.032, 0.937) pitch 0 yaw 0 roll 0  ±3 mm 0°  3 steps (line)  [161 steps left]\nMove right (dry run): NOT reachable  target (0.075, 0.018, 0.860) pitch -26 yaw 0 roll -15"
+        },
+        {
+          "frame": 339,
+          "action": 339,
+          "stepEnd": 361,
+          "turn": 35,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 339–361",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2
+          },
+          "code": "robot.goto('right',(.077,.016,.94),pitch=-20,yaw=0,roll=-15,gentle=True)\nrobot.goto('right',(.077,.016,.855),pitch=-20,yaw=0,roll=-15,gentle=True,contact=True)\nrobot.look('left_wrist',grid=True)",
+          "receipt": "Move right: at (0.077, 0.016, 0.940) pitch -20 yaw 0 roll -15  ±0 mm 0°  9 steps (line)  [152 steps left]\nMove right: BLOCKED — at (0.066, 0.017, 0.881) pitch -17 yaw 0 roll -12, 28 mm / 4° from (0.077, 0.016, 0.855) pitch -20 yaw 0 roll -15  13 steps  [139 steps left]"
+        },
+        {
+          "frame": 361,
+          "action": 361,
+          "stepEnd": 384,
+          "turn": 36,
+          "type": "tool",
+          "title": "gripper · goto · look",
+          "detail": "记录的工具调用；动作步 361–384",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 3,
+            "look": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.25,-.1,.98),pitch=0,yaw=0,roll=0)\nrobot.goto('right',(.114,-.149,.865),pitch=90,yaw=-120,grip='open',dry_run=True)",
+          "receipt": "Grip right: open 0.72 (gap ~5.8 cm)  13 steps  [126 steps left]\nMove right: at (0.250, -0.100, 0.980) pitch 0 yaw 0 roll 0  ±0 mm 0°  10 steps (line)  [116 steps left]"
+        },
+        {
+          "frame": 384,
+          "action": 384,
+          "stepEnd": 416,
+          "turn": 37,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 384–416",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 3,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.look(['head','right_wrist'],grid=True)",
+          "receipt": "Move right: at (0.124, -0.141, 0.871) pitch 89 yaw 57 roll 0  ±2 mm 1°  12 steps (line)  [104 steps left]\nMove right: at (0.124, -0.142, 0.790) pitch 90 yaw 57 roll 0  ±2 mm 0°  5 steps (line)  [99 steps left]"
+        },
+        {
+          "frame": 416,
+          "action": 416,
+          "stepEnd": 441,
+          "turn": 38,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 416–441",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('right',(.082,-.035,.93),pitch=0,yaw=30,roll=0,gentle=True)\nrobot.look(['head','left_wrist'],grid=True)\nrobot.state()",
+          "receipt": "Move right: at (0.082, -0.035, 0.930) pitch 0 yaw 30 roll 0  ±0 mm 0°  25 steps (line)  [59 steps left]\nstep 441 of 500 (59 left)"
+        },
+        {
+          "frame": 441,
+          "action": 441,
+          "stepEnd": 441,
+          "turn": 39,
+          "type": "tool",
+          "title": "image",
+          "detail": "记录的工具调用；动作步 441–441",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "image",
+            "image"
+          ],
+          "callCounts": {
+            "image": 2
+          },
+          "code": "robot.image('head')\nrobot.image('left_wrist')",
+          "receipt": ""
+        },
+        {
+          "frame": 441,
+          "action": 441,
+          "stepEnd": 446,
+          "turn": 40,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 441–446",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.077,-.023,.93),pitch=-2,yaw=30,roll=-4,gentle=True)\nrobot.goto('right',(.077,-.023,.889),pitch=-2,yaw=30,roll=-4,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.078, -0.024, 0.930) pitch -2 yaw 30 roll -3  ±1 mm 1°  1 steps (line)  [58 steps left]\nMove right: at (0.077, -0.023, 0.892) pitch -2 yaw 30 roll -4  ±3 mm 0°  4 steps (line)  [54 steps left]"
+        },
+        {
+          "frame": 446,
+          "action": 446,
+          "stepEnd": 449,
+          "turn": 41,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 446–449",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.077,-.023,.858),pitch=-2,yaw=30,roll=-4,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.076, -0.023, 0.861) pitch -2 yaw 30 roll -4  ±3 mm 0°  3 steps (line)  [51 steps left]"
+        },
+        {
+          "frame": 449,
+          "action": 449,
+          "stepEnd": 456,
+          "turn": 42,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 449–456",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.078,-.023,.91),pitch=-2,yaw=30,roll=-4,gentle=True)\nrobot.goto('right',(.078,-.023,.91),pitch=-8,yaw=30,roll=-13,gentle=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.078, -0.023, 0.909) pitch -2 yaw 30 roll -4  ±1 mm 0°  4 steps (line)  [47 steps left]\nMove right: at (0.078, -0.023, 0.910) pitch -8 yaw 30 roll -13  ±0 mm 0°  3 steps (line)  [44 steps left]"
+        },
+        {
+          "frame": 456,
+          "action": 456,
+          "stepEnd": 461,
+          "turn": 43,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 456–461",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.078,-.023,.91),pitch=5,yaw=30,roll=9,gentle=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.078, -0.023, 0.910) pitch 5 yaw 30 roll 9  ±0 mm 0°  5 steps (line)  [39 steps left]"
+        },
+        {
+          "frame": 461,
+          "action": 461,
+          "stepEnd": 461,
+          "turn": 44,
+          "type": "tool",
+          "title": "image · state",
+          "detail": "记录的工具调用；动作步 461–461",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "image",
+            "image",
+            "state"
+          ],
+          "callCounts": {
+            "image": 2,
+            "state": 1
+          },
+          "code": "robot.image('head')\nrobot.image('left_wrist')\nrobot.state()",
+          "receipt": "step 461 of 500 (39 left)"
+        },
+        {
+          "frame": 461,
+          "action": 461,
+          "stepEnd": 468,
+          "turn": 45,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 461–468",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.074,-.023,.91),pitch=1,yaw=30,roll=-1,gentle=True)\nrobot.goto('right',(.074,-.023,.852),pitch=1,yaw=30,roll=-1,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.074, -0.023, 0.910) pitch 1 yaw 30 roll -1  ±0 mm 0°  3 steps (line)  [36 steps left]\nMove right: at (0.074, -0.023, 0.853) pitch 1 yaw 30 roll -1  ±1 mm 0°  4 steps (line)  [32 steps left]"
+        },
+        {
+          "frame": 468,
+          "action": 468,
+          "stepEnd": 468,
+          "turn": 46,
+          "type": "tool",
+          "title": "image · state",
+          "detail": "记录的工具调用；动作步 468–468",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "image",
+            "image",
+            "state"
+          ],
+          "callCounts": {
+            "image": 2,
+            "state": 1
+          },
+          "code": "robot.image('head')\nrobot.image('left_wrist')\nrobot.state()",
+          "receipt": "step 468 of 500 (32 left)"
+        },
+        {
+          "frame": 468,
+          "action": 468,
+          "stepEnd": 480,
+          "turn": 47,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 468–480",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(.073,-.023,.855),pitch=3,yaw=30,roll=4,gentle=True)\nrobot.goto('right',(.073,-.023,.828),pitch=3,yaw=30,roll=4,gentle=True,contact=True)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Move right: at (0.073, -0.023, 0.855) pitch 3 yaw 30 roll 4  ±0 mm 0°  2 steps (line)  [30 steps left]\nMove right: BLOCKED — at (0.074, -0.020, 0.850) pitch 0 yaw 30 roll 4, 22 mm / 3° from (0.073, -0.023, 0.828) pitch 3 yaw 30 roll 4  10 steps  [20 steps left]"
+        },
+        {
+          "frame": 480,
+          "action": 480,
+          "stepEnd": 494,
+          "turn": 48,
+          "type": "tool",
+          "title": "gripper · goto · look · state",
+          "detail": "记录的工具调用；动作步 480–494",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(.19,-.12,.96),pitch=0,yaw=0,roll=0)\nrobot.look(['head','left_wrist'],grid=True)",
+          "receipt": "Grip right: open 0.79 (gap ~6.6 cm)  6 steps  [14 steps left]\nMove right: at (0.190, -0.120, 0.960) pitch 0 yaw 0 roll 0  ±1 mm 0°  8 steps (line)  [6 steps left]"
+        },
+        {
+          "frame": 494,
+          "action": 494,
+          "stepEnd": 499,
+          "turn": 49,
+          "type": "tool",
+          "title": "wait",
+          "detail": "记录的工具调用；动作步 494–499",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "wait"
+          ],
+          "callCounts": {
+            "wait": 1
+          },
+          "code": "robot.wait(6)",
+          "receipt": ""
+        }
+      ],
+      "missingDepthFrames": [],
+      "recordedMissingDepthFrames": [
+        500
+      ],
+      "depthFrameHolds": [
+        {
+          "frame": 500,
+          "sourceFrame": 499
+        }
+      ]
+    },
+    {
+      "id": "gt",
+      "key": "gt",
+      "name": "GT Depth",
+      "video": "gt-replay-rgb.mp4",
+      "depthVideo": "gt-replay-depth.mp4",
+      "depthPoster": "gt-replay-depth-poster.jpg",
+      "poster": "gt-replay-poster.jpg",
+      "duration": 11.88,
+      "frames": 297,
+      "actions": 296,
+      "turns": 21,
+      "score": 100,
+      "success": true,
+      "events": [
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 1,
+          "type": "tool",
+          "title": "task · state · find · look",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "获取观测与目标定位",
+          "calls": [
+            "task",
+            "state",
+            "find",
+            "find",
+            "look"
+          ],
+          "callCounts": {
+            "task": 1,
+            "state": 1,
+            "find": 2,
+            "look": 1
+          },
+          "code": "robot.state()\nrobot.find('head','tube')\nrobot.find('head','tube rack')",
+          "receipt": "step 0 of 500 (500 left)\nMask#1 head 'tube' score 0.41  centroid (386, 268)  box (358, 246)-(413, 287)  871 px"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 2,
+          "type": "tool",
+          "title": "find · measure · look · to_world",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "深度测量与三维定位",
+          "calls": [
+            "find",
+            "measure",
+            "measure",
+            "measure",
+            "measure",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "find": 1,
+            "measure": 4,
+            "look": 1,
+            "to_world": 6
+          },
+          "code": "robot.measure(('head',(319,199)))\nrobot.find('head','tube')\nrobot.look('head',crop=(260,160,380,240),zoom=3)",
+          "receipt": ""
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 3,
+          "type": "tool",
+          "title": "camera · to_world · goto",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "camera",
+            "camera",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto"
+          ],
+          "callCounts": {
+            "camera": 2,
+            "to_world": 6,
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-0.20,-0.03,0.88),pitch=60,yaw=0,dry_run=True)\nrobot.camera('head')\nrobot.camera('left_wrist')",
+          "receipt": "Move left (dry run): reachable, 12 steps by line  target (-0.200, -0.030, 0.880) pitch 60 yaw 0 roll 0"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 0,
+          "turn": 4,
+          "type": "tool",
+          "title": "to_world · goto",
+          "detail": "记录的工具调用；动作步 0–0",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "to_world",
+            "goto",
+            "goto"
+          ],
+          "callCounts": {
+            "to_world": 11,
+            "goto": 2
+          },
+          "code": "robot.goto('left',(-0.245,0.003,0.88),pitch=90,yaw=-15,dry_run=True)\nrobot.goto('left',(-0.07,0.02,0.92),pitch=0,yaw=-15,dry_run=True)",
+          "receipt": "Move left (dry run): reachable, 17 steps by line  target (-0.245, 0.003, 0.880) pitch 90 yaw -15 roll 0\nMove left (dry run): reachable, 15 steps by line  target (-0.070, 0.020, 0.920) pitch 0 yaw -15 roll 0"
+        },
+        {
+          "frame": 0,
+          "action": 0,
+          "stepEnd": 18,
+          "turn": 5,
+          "type": "tool",
+          "title": "goto · look · state · camera",
+          "detail": "记录的工具调用；动作步 0–18",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state",
+            "camera"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1,
+            "camera": 1
+          },
+          "code": "robot.goto('left',(-0.240,0.018,0.875),pitch=90,yaw=-14,grip='open')\nrobot.look(['head','left_wrist'],tile=True)\nrobot.state()",
+          "receipt": "Move left: at (-0.240, 0.017, 0.874) pitch 89 yaw -14 roll 0  ±1 mm 1°  18 steps (line)  [482 steps left]"
+        },
+        {
+          "frame": 18,
+          "action": 18,
+          "stepEnd": 35,
+          "turn": 6,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 18–35",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-0.240,0.018,0.783),pitch=90,yaw=-14,path='line')\nrobot.look(['head','left_wrist'],tile=True)",
+          "receipt": "Move left: at (-0.240, 0.018, 0.783) pitch 90 yaw -14 roll 0  ±0 mm 0°  6 steps (line)  [476 steps left]\nGrip left: closed on something ~2.8 cm wide (holding)  6 steps  [470 steps left]"
+        },
+        {
+          "frame": 35,
+          "action": 35,
+          "stepEnd": 60,
+          "turn": 7,
+          "type": "tool",
+          "title": "goto · look · to_world",
+          "detail": "记录的工具调用；动作步 35–60",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "to_world",
+            "to_world",
+            "to_world"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "to_world": 3
+          },
+          "code": "robot.goto('left',(-0.205,-0.055,0.950),pitch=0,yaw=-14,roll=0,gentle=True)\nrobot.look(['head','left_wrist'],tile=True)",
+          "receipt": "Move left: at (-0.205, -0.055, 0.950) pitch 0 yaw -14 roll 0  ±0 mm 0°  25 steps (line)  [440 steps left]"
+        },
+        {
+          "frame": 60,
+          "action": 60,
+          "stepEnd": 60,
+          "turn": 8,
+          "type": "tool",
+          "title": "look · to_world · goto",
+          "detail": "记录的工具调用；动作步 60–60",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "look",
+            "to_world",
+            "to_world",
+            "goto"
+          ],
+          "callCounts": {
+            "look": 1,
+            "to_world": 2,
+            "goto": 1
+          },
+          "code": "robot.goto('left',(-0.0706,-0.0132,0.925),pitch=0,yaw=-14,roll=0,dry_run=True)\nrobot.look('head',crop=(165,125,225,210),zoom=4)",
+          "receipt": "Move left (dry run): reachable, 8 steps by line  target (-0.071, -0.013, 0.925) pitch 0 yaw -14 roll 0"
+        },
+        {
+          "frame": 60,
+          "action": 60,
+          "stepEnd": 73,
+          "turn": 9,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 60–73",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('left',(-0.0706,-0.0132,0.925),pitch=0,yaw=-14,roll=0,gentle=True)\nrobot.look(['head','left_wrist'],tile=True)",
+          "receipt": "Move left: at (-0.073, -0.014, 0.925) pitch 0 yaw -14 roll 0  ±2 mm 0°  8 steps (line)  [432 steps left]\nMove left: at (-0.071, -0.013, 0.863) pitch 0 yaw -14 roll 0  ±3 mm 0°  5 steps (line)  [427 steps left]"
+        },
+        {
+          "frame": 73,
+          "action": 73,
+          "stepEnd": 83,
+          "turn": 10,
+          "type": "tool",
+          "title": "goto · look · state",
+          "detail": "记录的工具调用；动作步 73–83",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "state"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1,
+            "state": 1
+          },
+          "code": "robot.goto('left',(-0.0706,-0.0132,0.839),pitch=0,yaw=-14,roll=0,path='line',gentle=True,contact=True)\nrobot.look('head',crop=(255,140,380,240),zoom=3)\nrobot.state()",
+          "receipt": "Move left: BLOCKED — at (-0.069, -0.011, 0.858) pitch -3 yaw -14 roll -1, 19 mm / 3° from (-0.071, -0.013, 0.839) pitch 0 yaw -14 roll 0  10 steps  [417 steps left]\nstep 83 of 500 (417 left)"
+        },
+        {
+          "frame": 83,
+          "action": 83,
+          "stepEnd": 96,
+          "turn": 11,
+          "type": "tool",
+          "title": "gripper · goto · look · task",
+          "detail": "记录的工具调用；动作步 83–96",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "task"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1,
+            "task": 1
+          },
+          "code": "robot.gripper('left','open')\nrobot.goto('left',(-0.105,-0.115,0.940),pitch=0,yaw=-14,path='line')\nrobot.look('head',crop=(255,140,380,245),zoom=3)",
+          "receipt": "Grip left: open 1.00 (gap ~8.9 cm)  6 steps  [411 steps left]\nMove left: at (-0.105, -0.115, 0.940) pitch 0 yaw -14 roll 0  ±0 mm 0°  7 steps (line)  [404 steps left]"
+        },
+        {
+          "frame": 96,
+          "action": 96,
+          "stepEnd": 123,
+          "turn": 12,
+          "type": "tool",
+          "title": "home · goto · look",
+          "detail": "记录的工具调用；动作步 96–123",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "home",
+            "goto",
+            "look",
+            "goto"
+          ],
+          "callCounts": {
+            "home": 1,
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.home('left')\nrobot.goto('right',(0.389,0.018,0.875),pitch=90,yaw=-20,grip='open')\nrobot.goto('right',(0.066,0.015,0.858),pitch=0,yaw=-20,dry_run=True)",
+          "receipt": "Home: left home  9 steps  [395 steps left]\nMove right: at (0.389, 0.017, 0.874) pitch 89 yaw -20 roll 0  ±2 mm 1°  18 steps (line)  [377 steps left]"
+        },
+        {
+          "frame": 123,
+          "action": 123,
+          "stepEnd": 140,
+          "turn": 13,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 123–140",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(0.389,0.018,0.783),pitch=90,yaw=-20,path='line')\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right: at (0.389, 0.018, 0.783) pitch 90 yaw -20 roll 0  ±0 mm 0°  6 steps (line)  [371 steps left]\nGrip right: closed on something ~2.8 cm wide (holding)  6 steps  [365 steps left]"
+        },
+        {
+          "frame": 140,
+          "action": 140,
+          "stepEnd": 164,
+          "turn": 14,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 140–164",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(0.066,0.015,0.940),pitch=0,yaw=-20,roll=0,gentle=True)\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right: at (0.066, 0.015, 0.940) pitch 0 yaw -20 roll 0  ±0 mm 0°  24 steps (line)  [336 steps left]"
+        },
+        {
+          "frame": 164,
+          "action": 164,
+          "stepEnd": 177,
+          "turn": 15,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 164–177",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(0.066,0.015,0.849),pitch=0,yaw=-20,roll=0,path='line',gentle=True,contact=True)\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right: BLOCKED — at (0.065, 0.016, 0.857) pitch 0 yaw -20 roll 1, 8 mm / 1° from (0.066, 0.015, 0.849) pitch 0 yaw -20 roll 0  13 steps  [323 steps left]"
+        },
+        {
+          "frame": 177,
+          "action": 177,
+          "stepEnd": 191,
+          "turn": 16,
+          "type": "tool",
+          "title": "gripper · goto · look · task",
+          "detail": "记录的工具调用；动作步 177–191",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "gripper",
+            "goto",
+            "look",
+            "task"
+          ],
+          "callCounts": {
+            "gripper": 1,
+            "goto": 1,
+            "look": 1,
+            "task": 1
+          },
+          "code": "robot.gripper('right','open')\nrobot.goto('right',(0.100,-0.095,0.950),pitch=0,yaw=-20,path='line')\nrobot.look('head',crop=(260,140,380,240),zoom=3)",
+          "receipt": "Grip right: open 1.00 (gap ~8.9 cm)  7 steps  [316 steps left]\nMove right: at (0.100, -0.095, 0.950) pitch 0 yaw -20 roll 0  ±0 mm 0°  7 steps (line)  [309 steps left]"
+        },
+        {
+          "frame": 191,
+          "action": 191,
+          "stepEnd": 205,
+          "turn": 17,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 191–205",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(0.111,-0.160,0.880),pitch=90,yaw=56,grip='open')\nrobot.goto('right',(-0.004,0.0006,0.850),pitch=0,yaw=0,dry_run=True)\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right: at (0.111, -0.160, 0.880) pitch 90 yaw 56 roll 0  ±0 mm 0°  14 steps (line)  [295 steps left]\nMove right (dry run): reachable, 15 steps by line  target (-0.004, 0.001, 0.850) pitch 0 yaw 0 roll 0"
+        },
+        {
+          "frame": 205,
+          "action": 205,
+          "stepEnd": 225,
+          "turn": 18,
+          "type": "tool",
+          "title": "goto · gripper · look",
+          "detail": "记录的工具调用；动作步 205–225",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1
+          },
+          "code": "robot.goto('right',(0.111,-0.160,0.783),pitch=90,yaw=56,path='line')\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right: at (0.111, -0.160, 0.784) pitch 90 yaw 56 roll 0  ±1 mm 0°  6 steps (line)  [289 steps left]\nGrip right: closed on something ~2.8 cm wide (holding)  6 steps  [283 steps left]"
+        },
+        {
+          "frame": 225,
+          "action": 225,
+          "stepEnd": 247,
+          "turn": 19,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 225–247",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 1
+          },
+          "code": "robot.goto('right',(-0.0044,0.0006,0.855),pitch=0,yaw=56,roll=0,dry_run=True)\nrobot.goto('right',(0.105,-0.110,0.970),pitch=0,yaw=56,roll=0,gentle=True)\nrobot.look(['head','right_wrist'],tile=True)",
+          "receipt": "Move right (dry run): reachable, 16 steps by line  target (-0.004, 0.001, 0.855) pitch 0 yaw 56 roll 0\nMove right: at (0.105, -0.110, 0.970) pitch 0 yaw 56 roll 0  ±0 mm 0°  22 steps (line)  [253 steps left]"
+        },
+        {
+          "frame": 247,
+          "action": 247,
+          "stepEnd": 271,
+          "turn": 20,
+          "type": "tool",
+          "title": "goto · look",
+          "detail": "记录的工具调用；动作步 247–271",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "look",
+            "goto",
+            "look"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "look": 2
+          },
+          "code": "robot.goto('right',(-0.0044,0.0006,0.980),pitch=0,yaw=0,roll=0,gentle=True)\nrobot.goto('right',(-0.0044,0.0006,0.858),pitch=0,yaw=0,roll=0,path='line',gentle=True,contact=True)\nrobot.look('head')",
+          "receipt": "Move right: at (-0.004, 0.001, 0.980) pitch 0 yaw 0 roll 0  ±1 mm 0°  17 steps (line)  [236 steps left]\nMove right: at (-0.004, 0.001, 0.862) pitch 0 yaw 0 roll 0  ±4 mm 0°  7 steps (line)  [229 steps left]"
+        },
+        {
+          "frame": 271,
+          "action": 271,
+          "stepEnd": 295,
+          "turn": 21,
+          "type": "tool",
+          "title": "goto · gripper · look · home",
+          "detail": "记录的工具调用；动作步 271–295",
+          "summary": "位姿移动与夹爪控制",
+          "calls": [
+            "goto",
+            "gripper",
+            "goto",
+            "look",
+            "home"
+          ],
+          "callCounts": {
+            "goto": 2,
+            "gripper": 1,
+            "look": 1,
+            "home": 1
+          },
+          "code": "robot.goto('right',(-0.0044,0.0006,0.849),pitch=0,yaw=0,roll=0,path='line',gentle=True,contact=True)\nrobot.gripper('right','open')\nrobot.goto('right',(-0.0044,-0.075,0.970),pitch=0,yaw=0,path='line')",
+          "receipt": "Move right: BLOCKED — at (-0.006, 0.001, 0.857) pitch -1 yaw 0 roll 1, 8 mm / 1° from (-0.004, 0.001, 0.849) pitch 0 yaw 0 roll 0  9 steps  [220 steps left]\nGrip right: open 1.00 (gap ~8.9 cm)  6 steps  [214 steps left]"
+        }
+      ],
+      "missingDepthFrames": [],
+      "recordedMissingDepthFrames": [],
+      "depthFrameHolds": [],
+      "traceOrigin": "source-run",
+      "traceNote": "RGB 与 Depth 来自同次成功重放；工具记录来自源轨迹",
+      "captureProvenance": "paired GT physics replay"
+    }
+  ],
+  "provenance": "Curated individual episodes, including selected successful GT rerun; not a comparative success-rate evaluation. Video time is simulation steps, not agent wall time. Tool call names are recorded; execution ranges belong to cells, not individual calls.",
+  "playback": {
+    "type": "atlas",
+    "video": "atlas.mp4",
+    "size": [
+      1280,
+      1152
+    ],
+    "fps": 25,
+    "frames": 501,
+    "crops": {
+      "nsl": {
+        "rgb": [
+          0,
+          0,
+          640,
+          480
+        ],
+        "depth": [
+          0,
+          960,
+          256,
+          192
+        ]
+      },
+      "tradsl_d435": {
+        "rgb": [
+          640,
+          0,
+          640,
+          480
+        ],
+        "depth": [
+          256,
+          960,
+          256,
+          192
+        ]
+      },
+      "dav2_metric": {
+        "rgb": [
+          0,
+          480,
+          640,
+          480
+        ],
+        "depth": [
+          512,
+          960,
+          256,
+          192
+        ]
+      },
+      "gt": {
+        "rgb": [
+          640,
+          480,
+          640,
+          480
+        ],
+        "depth": [
+          768,
+          960,
+          256,
+          192
+        ]
+      }
+    }
+  }
+}

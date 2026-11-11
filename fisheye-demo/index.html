@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NSL · 鱼眼深度感知</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=strict-demo-1"><link rel="stylesheet" href="embed.css"></head>
+<body><main class="page">
+<figure class="wide">
+ <p class="cap" id="caption">加载中…</p>
+ <div class="stage" id="stage"><div class="grid" id="grid"></div><div class="loading" id="loading">加载中…</div></div>
+ <div class="ctrl">
+  <div class="seg" id="scenes" role="group" aria-label="物体"></div>
+  <div class="ctrl-r"><div class="seg" id="zooms" role="group" aria-label="缩放"><button data-z="1" aria-pressed="true">1×</button><button data-z="2" aria-pressed="false">2×</button><button data-z="4" aria-pressed="false">4×</button></div></div>
+ </div>
+ <div class="dclegend"><span>色阶参考</span><div class="seg" id="colorSource" role="group" aria-label="色阶参考"><button data-src="nsl" aria-pressed="false">NSL</button><button data-src="gt" aria-pressed="true">Ground truth</button></div><span class="depthkey"><span id="lowLabel">近</span><i></i><span id="highLabel">远</span></span></div>
+</figure>
+<div class="performance-card" aria-labelledby="performance-title"><div class="performance-head"><h3 id="performance-title">平均性能表现</h3></div><div class="performance-scroll"><table class="performance-table"><thead><tr><th>方法</th><th>平均 MAE（mm）↓</th><th>平均覆盖率（%）↑</th></tr></thead><tbody id="metrics"></tbody></table></div></div>
+</main><script type="module" src="app.js?v=strict-demo-1"></script></body></html>

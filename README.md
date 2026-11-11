@@ -1,8 +1,8 @@
 # DepthCore · Enterprise Depth Intelligence
 
-在线查看：https://yuyu61.github.io/silver-chair-nav/
+在线查看：https://depthcore-intelligence.github.io/demo/
 
-页面分为两大部分：深度展示与下游任务。四种深度输入统一接入操作、导航与空间推理流程。页面采用响应式布局，兼容桌面、平板和移动设备。
+页面分为两大部分：深度感知与下游任务。四种深度输入统一接入操作、导航与空间推理流程。页面采用响应式布局，兼容桌面、平板和移动设备。
 
 ## 文件
 
@@ -22,3 +22,9 @@ python3 -m http.server 8767 --bind 127.0.0.1
 ```
 
 然后打开 http://127.0.0.1:8767/#manipulation 。
+
+## T265 鱼眼深度对比
+
+在针孔深度与重复性表格之后、下游任务之前增加鱼眼深度部分，入口为 `#fisheye`。鱼眼部分完整复用当前六面板、十个物体、缩放、NSL/GT 色阶和平均性能表；默认还原到原始鱼眼视角。
+
+`fisheye-demo/` 包含独立的相对路径数据和渲染模块，`fisheye-embed.js` 自动匹配嵌入内容高度，避免内层滚动条。主页面可直接通过 HTTP 服务运行，无构建步骤。原针孔、重复性与下游任务的资源保留。

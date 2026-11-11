@@ -171,6 +171,15 @@ footer.col{margin-top:88px;padding:22px 0 36px;border-top:1px solid var(--line);
   .performance-head{display:block}.performance-head p{margin-top:3px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Embedded T265 comparison shares the report width and grows with its content. */
+.camera-heading{padding-top:40px;scroll-margin-top:24px}
+.camera-heading p{margin:0;color:var(--ink-2)}
+#dcFig{margin-top:40px}
+.fisheye-section{padding-top:72px;scroll-margin-top:24px}
+.fisheye-section .col{margin-bottom:32px}
+.fisheye-section .col p{margin:0;color:var(--ink-2)}
+.fisheye-frame{display:block;width:100%;height:1460px;border:0;background:var(--ivory)}
 </style>
 <link rel="icon" type="image/svg+xml" href="media/depthcore-logo.svg">
 <link rel="stylesheet" href="manipulation.css">
@@ -179,12 +188,14 @@ footer.col{margin-top:88px;padding:22px 0 36px;border-top:1px solid var(--line);
 <body>
 <div class="page">
 
-<header class="top col"><img src="media/depthcore-logo.svg" alt="DepthCore 深度核芯科技"><nav class="demo-nav" aria-label="页面导航"><a href="#depth">深度展示</a><a href="#manipulation">下游任务</a></nav></header>
+<header class="top col"><img src="media/depthcore-logo.svg" alt="DepthCore 深度核芯科技"><nav class="demo-nav" aria-label="页面导航"><a href="#depth">深度感知</a><a href="#manipulation">下游任务</a></nav></header>
 
 <div class="intro col" id="depth">
   <h1>深度感知能力展示</h1>
   <p class="depth-positioning"><b>我们先于行业 8 年选择 Learning 路线，持续构建 AI-native 的双目主动式深度。</b>相较于更简单、更成熟的传统 Pattern Match 及其后处理方法，我们直接从主动双目观测中学习三维表达，更适合复杂场景与具身智能的多样需求。以下展示深度质量与下游可用性的实测结果。</p>
 </div>
+
+<div class="camera-heading col" id="pinhole"><h2>针孔相机深度对比</h2><p>NSL 在针孔相机的多类物体测试中兼顾深度精度与有效覆盖率，清晰呈现物体的三维结构。</p></div>
 
 <figure class="wide" id="dcFig">
   <p class="cap" id="dcCap">加载中…</p>
@@ -225,6 +236,11 @@ footer.col{margin-top:88px;padding:22px 0 36px;border-top:1px solid var(--line);
   <div class="repeatability-head"><h3 id="repeatability-title">逐像素重复性对比</h3><p>指标为时间标准差 1σ，越小越好。“—”表示无法可靠评价。</p></div>
   <div class="repeatability-scroll"><table class="repeatability-table"><thead><tr><th>标称距离（m）</th><th>D435 原生<br>逐像素重复性中位数（mm）</th><th>NSL<br>逐像素重复性中位数（mm）</th></tr></thead><tbody><tr><td>0.20</td><td>—</td><td>0.0761</td></tr><tr><td>0.25</td><td>—</td><td>0.1056</td></tr><tr><td>0.30</td><td>0.5374</td><td>0.1511</td></tr><tr><td>0.40</td><td>0.4852</td><td>0.2199</td></tr><tr><td>0.50</td><td>—</td><td>0.3035</td></tr></tbody></table></div>
 </div>
+
+<section class="fisheye-section" id="fisheye" aria-labelledby="fisheye-title">
+  <div class="col"><h2 id="fisheye-title">鱼眼相机深度对比</h2><p>我们的模型训练数据中不包含鱼眼数据，依然在鱼眼相机上展现出良好的泛化能力。</p></div>
+  <div class="wide"><iframe class="fisheye-frame" id="fisheyeFrame" title="T265 鱼眼深度对比与平均性能" src="fisheye-demo/?view=native" loading="lazy" scrolling="no"></iframe></div>
+</section>
 
 <div class="intro col">
   <h1>深度的下游任务</h1>
@@ -862,5 +878,6 @@ setTimeout(() => {
 }, 250);
 })();
 </script>
+<script src="fisheye-embed.js"></script>
 </body>
 </html>
